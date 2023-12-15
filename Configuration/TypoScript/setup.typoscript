@@ -1,0 +1,12 @@
+page = PAGE
+page {
+    includeJSFooterlibs {
+        d3 = EXT:mpdb_core/Resources/Public/JavaScript/d3.v6.min.js
+        whatinput = EXT:mpdb_core/Resources/Public/JavaScript/what-input.min.js
+        foundationlib = EXT:mpdb_core/Resources/Public/JavaScript/foundation.min.js
+    }
+    includeJSFooter {
+        foundation = EXT:mpdb_core/Resources/Public/JavaScript/app.js
+        foundation.type = module
+    }
+}

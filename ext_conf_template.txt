@@ -1,0 +1,12 @@
+# cat=General; type=string; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.importDirectory
+importDirectory = Importe
+# cat=General; type=string; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.pianoGndId
+pianoGndId = 4030982-4
+# cat=Elasticsearch; type=string; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.elasticHostName
+elasticHostName = https://sdvelasticmusikverlage:9200
+# cat=Elasticsearch; type=string; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.elasticPwdPath
+elasticPwdPath = elastic_pwd.txt
+# cat=Elasticsearch; type=string; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.elasticCaFilePath
+elasticCaFilePath = http_ca.crt
+# cat=Elasticsearch; type=int; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.bulkSize
+bulkSize = 20

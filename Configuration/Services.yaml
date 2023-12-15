@@ -1,0 +1,19 @@
+services:
+  Slub\MpdbCore\Command\IndexCommand:
+    tags:
+      - name: 'console.command'
+        command: 'mpdb_core:index'
+        description: 'index database entries to elasticsearch endpoint'
+        hidden: false
+  Slub\MpdbCore\Command\CompleteGndWorksCommand:
+    tags:
+      - name: 'console.command'
+        command: 'mpdb_core:completegndworks'
+        description: 'get authority data for works with gnd id'
+        hidden: false
+  Slub\MpdbCore\Command\HealthCheckCommand:
+    tags:
+      - name: 'console.command'
+        command: 'mpdb_core:healthcheck'
+        description: 'check database consistency'
+        hidden: false
