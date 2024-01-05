@@ -2,8 +2,7 @@
 
 namespace Slub\MpdbCore\Command;
 
-// TODO name sequence steps, buffer results and reuse them
-
+use Illuminate\Support\Collection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,6 +25,9 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 
 class IndexCommand extends Command
 {
+    const PUBLISHED_ITEM_INDEX = 'published_item';
+    const WORK_INDEX = 'work';
+    const PERSON_INDEX = 'person';
 
     protected static $personData = [
         [ 'name', '', 'string' ],
@@ -589,11 +591,9 @@ class IndexCommand extends Command
             ]
         ];
         $this->indexList = [
-            'published_item' => self::$publishedItemSeq,
-            'person' => self::$personSeq,
-            'work' => self::$workSeq//,
-            //'genre' => self::$genreSeq,
-            //'instrument' => self::$instrumentSeq
+            self::PUBLISHED_ITEM_INDEX => self::$publishedItemSeq,
+            self::PERSON_INDEX => self::$personSeq,
+            self::WORK_INDEX => self::$workSeq
         ];
     }
 
@@ -638,10 +638,11 @@ class IndexCommand extends Command
         foreach ($this->indices as $name => $index) {
             $this->io->text('Committing the ' . $name . ' index');
             $idField = $this->dataObjectList[$name]['key'];
+            $indexName = Collection::wrap([ $extConf['prefix'], $name ]).join('_');
             $this->io->progressStart(count($index));
-            if ($client->indices()->exists(['index' => $name])) {
-                $client->indices()->delete(['index' => $name]);
-                $client->indices()->create(['index' => $name]);
+            if ($client->indices()->exists(['index' => $indexName])) {
+                $client->indices()->delete(['index' => $indexName]);
+                $client->indices()->create(['index' => $indexName]);
             }
 
             $params = [];
@@ -651,7 +652,7 @@ class IndexCommand extends Command
                 $this->io->progressAdvance();
                 $params['body'][] = [ 'index' => 
                     [ 
-                        '_index' => $name,
+                        '_index' => $indexName,
                         '_id' => $document[$idField]
                     ] 
                 ];
