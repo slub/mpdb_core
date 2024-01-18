@@ -68,7 +68,7 @@ class IndexCommand extends Command
         [ 'plate_id', 'publisher_number', 'string' ],
         [ 'part', '', 'string' ],
         [ 'voice', '', 'string' ],
-        [ 'published_item', 'published_item', '' ] ];
+        [ 'publisheditem', 'published_item', '' ] ];
     protected static $makroData = [
         [ 'title', '', 'string' ],
         [ 'type', '', 'string' ],
