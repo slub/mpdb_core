@@ -710,7 +710,7 @@ class IndexCommand extends Command
 
             if ($name == 'published_item') {
                 $qb->where(
-                    $eb->notLike('id', $qb->createNamedParameter('AA%'))
+                    $eb->notLike('mvdb_id', $qb->createNamedParameter('AA%'))
                 );
             }
 
