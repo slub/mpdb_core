@@ -175,7 +175,7 @@ class IndexCommand extends Command
         ],
         [
             'super' => 'published_item',
-            'sub' => 'published_subitem.published_item',
+            'sub' => 'published_subitem.publisheditem',
             'name' => 'published_subitems'
         ],
         [
