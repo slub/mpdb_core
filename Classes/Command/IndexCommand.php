@@ -631,6 +631,7 @@ class IndexCommand extends Command
      */
     protected function commitIndices() {
 		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
+        $prefix = $extConf['prefix'];
         $client = ElasticClientBuilder::create()->
             autoconfig()->
             build();
@@ -638,11 +639,10 @@ class IndexCommand extends Command
         foreach ($this->indices as $name => $index) {
             $this->io->text('Committing the ' . $name . ' index');
             $idField = $this->dataObjectList[$name]['key'];
-            $indexName = Collection::wrap([ $extConf['prefix'], $name ]).join('_');
+            //$indexName = Collection::wrap([ $extConf['prefix'], $name ]).join('_');
             $this->io->progressStart(count($index));
-            if ($client->indices()->exists(['index' => $indexName])) {
-                $client->indices()->delete(['index' => $indexName]);
-                $client->indices()->create(['index' => $indexName]);
+            if ($client->indices()->exists(['index' => $prefix . $name])) {
+                $client->indices()->delete(['index' => $prefix . $name]);
             }
 
             $params = [];
@@ -652,7 +652,7 @@ class IndexCommand extends Command
                 $this->io->progressAdvance();
                 $params['body'][] = [ 'index' => 
                     [ 
-                        '_index' => $indexName,
+                        '_index' => $prefix . $name,
                         '_id' => $document[$idField]
                     ] 
                 ];

@@ -10,5 +10,5 @@ elasticPwdPath = elastic_pwd.txt
 elasticCaFilePath = http_ca.crt
 # cat=Elasticsearch; type=int; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.bulkSize
 bulkSize = 20
-# cat=Elasticsearch; type=int; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.prefix
+# cat=Elasticsearch; type=string; label=LLL:EXT:mpdb_core/Resources/Private/Language/Labels.xml:config.prefix
 prefix = 
