@@ -634,14 +634,11 @@ class IndexCommand extends Command
             autoconfig()->
             build();
 
+
         foreach ($this->indices as $name => $index) {
             $this->io->text('Committing the ' . $name . ' index');
             $idField = $this->dataObjectList[$name]['key'];
             //$indexName = Collection::wrap([ $extConf['prefix'], $name ]).join('_');
-            $this->io->progressStart(count($index));
-            if ($client->indices()->exists(['index' => $prefix . $name])) {
-                $client->indices()->delete(['index' => $prefix . $name]);
-            }
 
             $params = [];
             $params = [ 'body' => [] ];
@@ -649,11 +646,13 @@ class IndexCommand extends Command
             $client = ElasticClientBuilder::create()->
                 autoconfig()->
                 build();
+
+            $this->io->progressStart(count($index));
             foreach ($index as $document) {
                 $this->io->progressAdvance();
                 $params['body'][] = [ 'index' => 
                     [ 
-                        '_index' => $prefix . $name,
+                        '_index' => 'temp' . $prefix . $name,
                         '_id' => $document[$idField]
                     ] 
                 ];
@@ -667,6 +666,24 @@ class IndexCommand extends Command
             }
             $this->io->progressFinish();
             $client->bulk($params);
+
+            if ($client->indices()->exists(['index' => $prefix . $name])) {
+                $client->indices()->delete(['index' => $prefix . $name]);
+            }
+
+            $params = [
+                'index' => 'temp' . $prefix . $name,
+                'body' => [
+                    'index.blocks.write' => TRUE
+                ]
+            ];
+            $client->indices()->putSettings($params);
+            $params = [
+                'index' => 'temp' . $prefix . $name,
+                'target' => $prefix . $name
+            ];
+            $client->indices()->clone($params);
+            $client->indices()->delete(['index' => 'temp' . $prefix . $name]);
         }
     }
 
