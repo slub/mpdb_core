@@ -661,10 +661,8 @@ class IndexCommand extends Command
 
                 // commit bulk
                 if (!(++$bulkCount % $extConf['bulkSize'])) {
-                    var_dump($params);
                     $client->bulk($params);
                     $params = [ 'body' => [] ];
-                    var_dump($params);die;
                 }
             }
             $this->io->progressFinish();
@@ -746,7 +744,6 @@ class IndexCommand extends Command
             ];
             $this->io->text('subordinating ' . $config['subObject'] . ' to ' . $config['superObject']);
 
-            //var_dump($this->dataObjects['published_subitem']);die;
             $superDataObjects = $buffer[$config['superObject']] ?? $this->dataObjects[$config['superObject']];
             $subBuffer = isset($buffer[$config['subObject']]) ? $buffer[$config['subObject']] : null;
             $subDataObjects = $this->index($config, $subBuffer);
