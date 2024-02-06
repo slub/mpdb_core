@@ -278,7 +278,7 @@ return [
         ],
         'publisher_actions' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishedsubitem.publisher_actions',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishedsubitem.publisher_actions',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_mpdbcore_domain_model_publisheraction',

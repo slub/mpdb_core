@@ -139,7 +139,7 @@ class CompleteGndWorksCommand extends Command
         $this->personRepository = $objectManager->get(PersonRepository::class);
         $this->instrumentRepository = $objectManager->get(InstrumentRepository::class);
         $this->formRepository = $objectManager->get(FormRepository::class);
-        $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('publisher_db');
+        $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
     }
 
 }

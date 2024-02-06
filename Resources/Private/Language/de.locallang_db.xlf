@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:mpdb_core/Resources/Private/Language/locallang_db" date="2022-04-26T11:22:12Z" product-name="mpdb_core">
+		<header/>
+		<body>
+			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument" resname="tx_mpdbcore_domain_model_subiteminstrument">
+				<source>Instrument for published subitem</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument.abbreviation" resname="tx_mpdbcore_domain_model_subiteminstrument.abbreviation">
+				<source>abbreviated name</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument.expansion" resname="tx_mpdbcore_domain_model_subiteminstrument.expansion">
+				<source>expanded name</source>
+			</trans-unit>
+        </body>
+    </file>
+</xliff>

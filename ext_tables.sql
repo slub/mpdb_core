@@ -1,4 +1,12 @@
 #
+# Table structure for table 'tx_mpdbcore_domain_model_subiteminstrument'
+#
+CREATE TABLE tx_mpdbcore_domain_model_subiteminstrument (
+    abbreviation varchar(255) DEFAULT '' NOT NULL,
+    expanded varchar(255) DEFAULT '' NOT NULL
+);
+
+#
 # Table structure for table 'tx_mpdbcore_domain_model_publishedsubitem'
 #
 CREATE TABLE tx_mpdbcore_domain_model_publishedsubitem (

@@ -1,8 +1,8 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheraction',
-        'label' => 'date_of_action',
+        'title' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_subiteminstrument',
+        'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -17,14 +17,14 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'type',
-        'iconfile' => 'EXT:mpdb_core/Resources/Public/Icons/tx_mpdbcore_domain_model_publisheraction.gif'
+        'searchFields' => 'abbreviation,expansion',
+        'iconfile' => 'EXT:mpdb_core/Resources/Public/Icons/tx_mpdbcore_domain_model_subiteminstrument.gif'
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, date_of_action, quantity, type, certain, inferred, in_store',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, abbreviation, expansion',
     ],
     'types' => [
-        '1' => ['showitem' => 'date_of_action, quantity, type, certain, inferred, in_store, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'abbreviation, expansion, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -55,8 +55,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_mpdbcore_domain_model_publisheraction',
-                'foreign_table_where' => 'AND {#tx_mpdbcore_domain_model_publisheraction}.{#pid}=###CURRENT_PID### AND {#tx_mpdbcore_domain_model_publisheraction}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_mpdbcore_domain_model_subiteminstrument',
+                'foreign_table_where' => 'AND {#tx_mpdbcore_domain_model_subiteminstrument}.{#pid}=###CURRENT_PID### AND {#tx_mpdbcore_domain_model_subiteminstrument}.{#sys_language_uid} IN (-1,0)',
             ],
         ],
         'l10n_diffsource' => [
@@ -116,80 +116,22 @@ return [
                 ]
             ],
         ],
-
-        'date_of_action' => [
+        'abbreviation' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheraction.date_of_action',
-            'config' => [
-                'dbType' => 'date',
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'size' => 7,
-                'eval' => 'date',
-                'default' => null,
-            ],
-        ],
-        'quantity' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheraction.quantity',
-            'config' => [
-                'type' => 'input',
-                'size' => 4,
-                'eval' => 'int'
-            ]
-        ],
-        'type' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheraction.type',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_subiteminstrument.abbreviation',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
             ],
         ],
-        'certain' => [
+        'expansion' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheraction.certain',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_subiteminstrument.expansion',
             'config' => [
-                'type' => 'check',
-                'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-                    ]
-                ],
-                'default' => 0,
-            ]
-        ],
-        'inferred' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheraction.inferred',
-            'config' => [
-                'type' => 'check',
-                'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-                    ]
-                ],
-                'default' => 0,
-            ]
-        ],
-        'in_store' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheraction.in_store',
-            'config' => [
-                'type' => 'check',
-                'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-                    ]
-                ],
-                'default' => 0,
-            ]
-        ],
-    
-        'publishermikroitem' => [
-            'config' => [
-                'type' => 'passthrough',
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
             ],
         ],
     ],

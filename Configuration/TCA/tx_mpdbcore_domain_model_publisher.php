@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher',
+        'title' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -17,7 +17,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'name,shorthand,location,alternate_name',
-        'iconfile' => 'EXT:publisher_db/Resources/Public/Icons/tx_mpdbcore_domain_model_publisher.gif'
+        'iconfile' => 'EXT:mpdb_core/Resources/Public/Icons/tx_mpdbcore_domain_model_publisher.gif'
     ],
     'interface' => [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, shorthand, location, alternate_name, active_from, active_to, responsible_persons',
@@ -118,7 +118,7 @@ return [
 
         'name' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.name',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.name',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -127,7 +127,7 @@ return [
         ],
         'shorthand' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.shorthand',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.shorthand',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -136,7 +136,7 @@ return [
         ],
         'location' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.location',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.location',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -145,7 +145,7 @@ return [
         ],
         'alternate_name' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.alternate_name',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.alternate_name',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -154,7 +154,7 @@ return [
         ],
         'active_from' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.active_from',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.active_from',
             'config' => [
                 'dbType' => 'date',
                 'type' => 'input',
@@ -166,7 +166,7 @@ return [
         ],
         'active_to' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.active_to',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.active_to',
             'config' => [
                 'dbType' => 'date',
                 'type' => 'input',
@@ -178,7 +178,7 @@ return [
         ],
         'responsible_persons' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:publisher_db/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.responsible_persons',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.responsible_persons',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',

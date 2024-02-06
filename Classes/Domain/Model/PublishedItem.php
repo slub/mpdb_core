@@ -266,7 +266,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getIsPianoReduction()
     {
-		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('publisher_db');
+		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
 
         $pianoId = $extConf['pianoGndId'];
         $pianoIsLinked = false;
@@ -862,7 +862,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function removeInstrument($instrumentToRemove)
     {
-		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('publisher_db');
+		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
         if ($instrumentToRemove->getGndId() == $extConf['pianoGndId']) {
             $this->pianoCombination = "";
         }
