@@ -649,6 +649,7 @@ class IndexCommand extends Command
 
             $this->io->progressStart(count($index));
             foreach ($index as $document) {
+                $document['type'] = $name;
                 $this->io->progressAdvance();
                 $params['body'][] = [ 'index' => 
                     [ 
