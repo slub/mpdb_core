@@ -48,7 +48,8 @@
         "ci:php": [ "@ci:php:stan" ],
         "ci:php:stan": [ "phpstan analyse Classes" ],
         "ci:tests": [ "@ci:tests:unit" ],
-        "ci:tests:unit": [ "phpunit -c config/UnitTests.xml" ]
+        "ci:tests:unit": [ "phpunit -c config/UnitTests.xml" ],
+        "ci:tests:functional": [ "phpunit -c config/FunctionalTests.xml" ]
     },
     "extra": {
         "typo3/cms": {

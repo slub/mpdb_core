@@ -968,7 +968,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return Collection::wrap($this->containedWorks->toArray())->
             map( function($work) { return self::getWorkComposerName($work); } )->
             unique()->
-            join(';');
+            join('; ');
     }
 
     protected static function getComposerName(GndPerson $composer): string
