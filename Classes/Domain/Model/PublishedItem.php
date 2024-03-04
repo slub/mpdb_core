@@ -285,7 +285,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->mvdbId = $this->publisher->getShorthand() .
             '_' . $minPlateId;
 
-        Collection::wrap($this->publishedSubitems)->
+        Collection::wrap($this->publishedSubitems->toArray())->
             each( function($subitem) { $this->setSubitemMvdbId($subitem); } );
     }
 
@@ -364,7 +364,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \Slub\MpdbCore\Domain\Model\Publisher $publisher
      */
-    public function getPublisher(): Publisher
+    public function getPublisher(): ?Publisher
     {
         return $this->publisher;
     }
@@ -699,7 +699,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string $responsiblePerson
      */
-    public function getResponsiblePerson(): GndPerson
+    public function getResponsiblePerson(): string
     {
         return $this->responsiblePerson;
     }
@@ -710,30 +710,9 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $responsiblePerson
      * @return void
      */
-    public function setResponsiblePerson(GndPerson $responsiblePerson): void
+    public function setResponsiblePerson(string $responsiblePerson): void
     {
         $this->responsiblePerson = $responsiblePerson;
-    }
-
-    /**
-     * Returns the dateOfPublishing
-     * 
-     * @return \DateTime $dateOfPublishing
-     */
-    public function getDateOfPublishing(): \DateTime
-    {
-        return $this->dateOfPublishing;
-    }
-
-    /**
-     * Sets the dateOfPublishing
-     * 
-     * @param \DateTime $dateOfPublishing
-     * @return void
-     */
-    public function setDateOfPublishing(\DateTime $dateOfPublishing): void
-    {
-        $this->dateOfPublishing = $dateOfPublishing;
     }
 
     /**
@@ -820,7 +799,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Genre> form
      */
-    public function getForm(): Genre
+    public function getGenre(): ObjectStorage
     {
         return $this->form;
     }
@@ -831,7 +810,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Genre> $form
      * @return void
      */
-    public function setForm(ObjectStorage $form): void
+    public function setGenre(ObjectStorage $form): void
     {
         $this->form = $form;
     }
@@ -892,10 +871,10 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the final
      * 
-     * @param bool $final
+     * @param int $final
      * @return void
      */
-    public function setFinal(bool $final): void
+    public function setFinal(int $final): void
     {
         $this->final = $final;
         Collection::wrap($this->getContainedWorks()->toArray())->
@@ -1009,7 +988,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getPlateIds(): Collection
     {
-        return Collection::wrap($this->publishedSubitems)->
+        return Collection::wrap($this->publishedSubitems->toArray())->
             map( function($subitem) { return self::getSubitemPlateId($subitem); } );
     }
 

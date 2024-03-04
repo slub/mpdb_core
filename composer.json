@@ -44,9 +44,11 @@
         "post-autoload-dump": [
             "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
         ],
-        "ci": [ "@ci:php" ],
+        "ci": [ "@ci:php", "@ci:tests" ],
         "ci:php": [ "@ci:php:stan" ],
-        "ci:php:stan": [ "phpstan analyse Classes" ]
+        "ci:php:stan": [ "phpstan analyse Classes" ],
+        "ci:tests": [ "@ci:tests:unit" ],
+        "ci:tests:unit": [ "phpunit -c config/UnitTests.xml" ]
     },
     "extra": {
         "typo3/cms": {
