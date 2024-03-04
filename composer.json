@@ -11,18 +11,24 @@
     "require": {
         "typo3/cms-core": "^11",
         "typo3/cms-reports": "^11",
-        "elasticsearch/elasticsearch": "^7",
-        "slub/dm-ont": "dev-main",
+        "elasticsearch/elasticsearch": "^8",
+        "slub/dm-ont": "dev-dev",
         "fluidtypo3/vhs": "^6",
         "illuminate/collections": "^8"
     },
     "config": {
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true,
+            "php-http/discovery": true
+        },
         "vendor-dir": ".Build/vendor",
         "bin-dir": ".Build/bin"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8",
-        "typo3/testing-framework": "^4.11.1"
+        "phpunit/phpunit": "^9",
+        "phpstan/phpstan": "^1",
+        "typo3/testing-framework": "^7"
     },
     "autoload": {
         "psr-4": {
@@ -37,7 +43,10 @@
     "scripts": {
         "post-autoload-dump": [
             "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
-        ]
+        ],
+        "ci": [ "@ci:php" ],
+        "ci:php": [ "@ci:php:stan" ],
+        "ci:php:stan": [ "phpstan analyse Classes" ]
     },
     "extra": {
         "typo3/cms": {
@@ -45,5 +54,16 @@
             "ignore-as-root": false,
             "web-dir": ".Build/Web"
         }
-    }
+    },
+    "repositories": {
+	"dmnorm": {
+	    "type": "git",
+	    "url": "https://github.com/dikastes/dmnorm"
+	},
+	"dmont": {
+	    "type": "git",
+	    "url": "https://github.com/dikastes/dmont"
+	}
+    },
+    "minimum-stability": "dev"
 }

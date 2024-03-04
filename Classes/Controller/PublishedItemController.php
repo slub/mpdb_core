@@ -1,23 +1,24 @@
 <?php
 
-namespace Slub\MpdbPresentation\Controller;
+namespace Slub\MpdbCore\Controller;
 
-use \TYPO3\CMS\Core\Http\ApplicationType;
-use \TYPO3\CMS\Core\Messaging\AbstractMessage;
-use \TYPO3\CMS\Core\Pagination\SimplePagination;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
-use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use \TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use \Slub\DmNorm\Domain\Model\Person;
-use \Slub\MpdbCore\Domain\Model\Publisher;
-use \Slub\MpdbCore\Domain\Model\PublisherAction;
-use \Slub\MpdbCore\Domain\Model\PublishedItem;
-use \Slub\MpdbCore\Domain\Model\PublishedSubitem;
-use \Slub\MpdbCore\Domain\Model\Work;
-use \Slub\MpdbCore\Lib\DbArray;
-use \Slub\MpdbCore\Lib\Tools;
+use Slub\DmNorm\Domain\Model\GndPerson;
+use Slub\MpdbCore\Command\IndexCommand;
+use Slub\MpdbCore\Domain\Model\Publisher;
+use Slub\MpdbCore\Domain\Model\PublisherAction;
+use Slub\MpdbCore\Domain\Model\PublishedItem;
+use Slub\MpdbCore\Domain\Model\PublishedSubitem;
+use Slub\MpdbCore\Domain\Model\Work;
+use Slub\MpdbCore\Lib\DbArray;
+use Slub\MpdbCore\Lib\Tools;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /***
  *
@@ -64,7 +65,7 @@ class PublishedItemController extends AbstractController
         $publishers = $this->publisherRepository->findAll();
         $desc = false;
 
-        $publisherMakroItems = $this->publisherMakroItemRepository->
+        $publisherMakroItems = $this->publishedItemRepository->
             dbListFe($publisher, $sortString, $desc, $final);
 
         $publisherMakroItemPaginator = new QueryResultPaginator($publisherMakroItems, $from, $itemsPerPage);
@@ -103,47 +104,28 @@ class PublishedItemController extends AbstractController
         return $pages;
     }
 
-    private function search($level, $searchTerm, $publisher)
+    private function searchAction(array $config)
     {
-        $umlauts = ['ae', 'oe', 'ue', 'ss', 'ä', 'ö', 'ü', 'é'];
-        $purgedTerm = str_replace($umlauts, ' ', $searchTerm);
-        $makrosFromPersons = (new DbArray(explode(' ', $purgedTerm)))->
-            filter(function ($term) { return strlen($term) != 1; })->
-            map( function ($term) use ($level) { return $this->personRepository->search($term, $level)->toArray(); } )->
-            merge()->
-            unique()->
-            map( function ($person) { return $person->getWorks()->toArray(); } )->
-            merge()->
-            map( function ($work) { return $work->getPublisherMakroItems()->toArray(); } )->
-            merge()->
-            filter( function ($makro) { return $makro->getFinal() >= $level; } );
-        if ($publisher) {
-            $makrosFromPersons = $makrosFromPersons
-                ->filter( function ($makro) use ($publisher) { 
-                    return $makro->getPublisher() == $publisher; } );
-        }
-        return (new DbArray())->
-            set(explode(' ', $purgedTerm))->
-            filter(function ($term) { return strlen($term) != 1; })->
-            map(function ($term) use ($level, $publisher) { return $this->publisherMakroItemRepository->dbSearchFe($level, $term, $publisher)->toArray(); })->
-            merge()->
-            concat($makrosFromPersons->toArray())->
-            group(
-                function ($item) { return $item; }, 
-                function ($item) { return $item->getMvdbId(); }
-            )->
-            map(
-                function ($groupedItem) use($searchTerm) {
-                    $baseRelevance = 0;
-                    if ($groupedItem['groupObject']->getTitle() === $searchTerm) {
-                        $baseRelevance = 1;
-                    }
-                    return ['item' => $groupedItem['groupObject'], 'relevance' => count($groupedItem['group'])];
-                }
-            )->
-            sort(function ($a, $b) { return $a['relevance'] - $b['relevance']; })->
-            map(function ($groupedItem) { return $groupedItem['item']; })->
-            toArray();
+        $publishedItems = $this->searchService->
+            setPublisher($config['publisher'] ?? '')->
+            setIndex(IndexCommand::PUBLISHED_ITEM_INDEX)->
+            setSearchterm($config['searchTerm'] ?? '')->
+            setFrom($config['from'] ?? 0)->
+            search();
+        $totalItems = $this->searchService->count();
+        $publishers = $this->searchService->
+            reset()->
+            setIndex(IndexCommand::PUBLISHER_INDEX_NAME)->
+            search()->
+            pluck('_source');
+
+        $this->view->assign('entities', $publishedItems->all());
+        $this->view->assign('config', $config);
+        $this->view->assign('totalItems', $totalItems);
+        $this->view->assign('publishers', $publishers->all());
+        $this->view->assign('resultCount', self::RESULT_COUNT);
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -163,14 +145,16 @@ class PublishedItemController extends AbstractController
         // use dbarray!
         foreach ($publisherMikroItems as $publisherMikroItem) {
             $publisherActions = array_merge(
-            $publisherActions, 
-            $this->publisherActionRepository->findByPublisherMikroItem($publisherMikroItem)->toArray()
+                $publisherActions, 
+                $this->publisherActionRepository->
+                    findByPublisherMikroItem($publisherMikroItem)->
+                    toArray()
             );
         }
         usort($publisherActions, $sortByDate);
 
         $document = $this->elasticClient->get([
-            'index' => PublishedItem::TABLE_INDEX_NAME,
+            'index' => IndexCommand::PUBLISHED_ITEM_INDEX,
             'id' => $publishedItem->getMvdbId()
         ]);
         $jsonDocument = json_encode($document['_source']);
@@ -209,39 +193,6 @@ class PublishedItemController extends AbstractController
     }
 
     /**
-     * action lookup
-     * 
-     * @param string $searchString
-     * @return void
-     */
-    public function lookupAction(string $searchString)
-    {
-        $delim = substr_count($searchString, '_') ? '_' : ',';
-        $query = explode($delim, $searchString);
-        if (isset($query[1]))
-            $plate = trim($query[1]);
-        $publisherShorthand = trim($query[0]);
-        $publisher = $this->publisherRepository->findOneByShorthand($publisherShorthand);
-
-        if ($publisher && $plate) {
-            $publisherMakroItem = $this->publisherMakroItemRepository->lookupPlateId($plate, $publisher, $this->level);
-            if ($publisherMakroItem) {
-                foreach ($publisherMakroItem->getPublisherMikroItems() as $publisherMikroItem) {
-                    if ($publisherMikroItem->getPlateId() == $plate) break;
-                }
-                if (TYPO3_MODE === 'BE')
-                    $this->redirect('edit', null, null, ['publisherMakroItem' => $publisherMakroItem, 'activeMikro' => $publisherMikroItem]);
-                else
-                    $this->redirect('show', null, null, ['publisherMakroItem' => $publisherMakroItem]);
-            } else {
-                $this->addFlashMessage('Verlagsartikel nicht gefunden', 'Fehler', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-                $this->redirect('list');
-            }
-        }
-        $this->redirect('search', null, null, ['term' => $searchString]);
-    }
-
-    /**
      * action getNext
      * 
      * @param Slub\MpdbCore\Domain\Model\PublishedItem $publisherMakroItem
@@ -249,7 +200,7 @@ class PublishedItemController extends AbstractController
      */
     public function getNextAction(PublishedItem $publisherMakroItem)
     {
-        $next = $this->publisherMakroItemRepository->findNext($publisherMakroItem);
+        $next = $this->publishedItemRepository->findNext($publisherMakroItem);
         if ($next) {
             $this->redirect('edit', null, null, ['publisherMakroItem' => $next]);
         } else {
@@ -265,7 +216,7 @@ class PublishedItemController extends AbstractController
      */
     public function getPreviousAction(PublishedItem $publisherMakroItem)
     {
-        $previous = $this->publisherMakroItemRepository->findPrevious($publisherMakroItem);
+        $previous = $this->publishedItemRepository->findPrevious($publisherMakroItem);
         if ($previous) {
             $this->redirect('edit', null, null, ['publisherMakroItem' => $previous]);
         } else {
@@ -273,118 +224,4 @@ class PublishedItemController extends AbstractController
         }
     }
 
-    /**
-     * action lookupWork
-     * 
-     * @param Slub\MpdbCore\Domain\Model\PublishedItem $publisherMakroItem
-     * @param string $name
-     * @return void
-     */
-    public function lookupWorkAction(PublisherMakroItem $publisherMakroItem, string $name)
-    {
-        $works = $this->workRepository->lookupWork($name);
-        $this->view->assign('works', $works);
-        $this->view->assign('name', $name);
-        $this->view->assign('publisherMakroItem', $publisherMakroItem);
-    }
-
-    /**
-     * action lookupForm
-     * 
-     * @param Slub\MpdbCore\Domain\Model\PublishedItem $publisherMakroItem
-     * @param string $name
-     * @return void
-     */
-    public function lookupFormAction(
-        PublisherMakroItem $publisherMakroItem,
-        string $name
-    )
-    {
-        //throw away or refactor
-        $forms = $this->objectManager->get('SLUB\\PublisherDb\\Domain\\Repository\\FormRepository')->lookupForm($name);
-        $forms = Tools::elimDuplicates($forms);
-        $this->view->assign('forms', $forms);
-        $this->view->assign('publisherMakroItem', $publisherMakroItem);
-    }
-
-    /**
-     * action lookupInstrument
-     * 
-     * @param Slub\MpdbCore\Domain\Model\PublishedItem $publisherMakroItem
-     * @param string $name
-     * @return void
-     */
-    public function lookupInstrumentAction(PublishedItem $publisherMakroItem, string $name)
-    {
-        //throw away or refactor
-        $instruments = $this->objectManager->get('SLUB\\PublisherDb\\Domain\\Repository\\InstrumentRepository')->lookupInstrument($name);
-        $instruments = Tools::elimDuplicates($instruments);
-        $url = 'http://sdvlodpro.slub-dresden.de:9200/gnd_marc21/_search?q=150.__.a.keyword:' . $name;
-        $query = json_decode(file_get_contents($url), true);
-        foreach ($query['hits']['hits'] as $set) {
-            $superWord = '';
-            $flatSet = \SLUB\PublisherDb\Lib\GndLib::flattenDataSet($set['_source']);
-            foreach ($flatSet[550] as $row) {
-                if ($row['i'] == 'Oberbegriff allgemein') {
-                    if ($superWord) {
-                        $superWord = $superWord . ', ' . $row['a'];
-                    } else {
-                        $superWord = $row['a'];
-                    }
-                }
-            }
-            $queryOut[] = [
-            'name' => $flatSet[150][0]['a'], 
-            'superWord' => $superWord, 
-            'id' => $flatSet['024'][0]['a']
-            ];
-        }
-        $this->view->assign('query', $queryOut);
-        $this->view->assign('instruments', $instruments);
-        $this->view->assign('publisherMakroItem', $publisherMakroItem);
-    }
-
-    /**
-     * action search
-     * 
-     * @param string $term
-     * @return void
-     */
-    public function searchAction(string $term)
-    {
-        $params = [
-            'index' => 'published_item',
-            'body' => [
-                'query' => [
-                    'query_string' => [
-                        'query' => $term
-                    ]
-                ]
-            ]
-        ];
-        $elasticResults = $this->elasticClient->search($params)['hits']['hits'];
-
-        foreach ($elasticResults as $elasticResult) {
-            $results[] = $this->publisherMakroItemRepository->findByUid($elasticResult['_source']['uid']);
-        }
-
-        $this->view->assign('publisherMakroItems', $results ?? []);
-    }
-
-    /**
-     * action lookupPerson
-     * 
-     * @param PublisherMakroItem $publisherMakroItem
-     * @param string $name
-     * @param string $role
-     * @return void
-     */
-    public function lookupPersonAction(PublishedItem $publisherMakroItem, string $name, string $role)
-    {
-        $persons = $this->personRepository->lookupComposer($name);
-        $persons = Tools::elimDuplicates($persons);
-        $this->view->assign('persons', $persons);
-        $this->view->assign('publisherMakroItem', $publisherMakroItem);
-        $this->view->assign('role', $role);
-    }
 }

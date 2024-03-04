@@ -4,13 +4,18 @@
  * This class wraps around Elasticsearch's ClientBuilder and offers an automatic configuration
  */
 
-namespace SLUB\MpdbCore\Common;
+namespace Slub\MpdbCore\Common;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\ClientBuilder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 class ElasticClientBuilder extends ClientBuilder {
+
+    public static function create(): ElasticClientBuilder
+    {
+        return new ElasticClientBuilder();
+    }
 
     public function autoconfig ()
     {

@@ -1,8 +1,11 @@
 <?php
 namespace Slub\MpdbCore\Domain\Model;
 
+use Illuminate\Support\Collection;
 use Slub\DmNorm\Domain\Model\GndWork;
 use Slub\DmNorm\Domain\Model\GndPerson;
+use Slub\DmOnt\Domain\Model\Instrument;
+use Slub\DmOnt\Domain\Model\Genre;
 use Slub\MpdbCore\Lib\DbArray;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -177,13 +180,6 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $comment = '';
 
     /**
-     * plateIds
-     * 
-     * @var string
-     */
-    protected $plateIds = '';
-
-    /**
      * publisher
      * 
      * @var \Slub\MpdbCore\Domain\Model\Publisher
@@ -243,7 +239,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $pianoCombination
      * @return void
      */
-    public function setPianoCombination($pianoCombination)
+    public function setPianoCombination($pianoCombination): void
     {
         if (in_array($pianoCombination, array_keys(self::pianoCombinations)))
             $this->pianoCombination = $pianoCombination;
@@ -254,7 +250,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return void
      */
-    public function getPianoCombination()
+    public function getPianoCombination(): string
     {
         return $this->pianoCombination;
     }
@@ -262,9 +258,9 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * gets if published item is a piano reduction
      *
-     * @return boolean
+     * @return bool
      */
-    public function getIsPianoReduction()
+    public function getIsPianoReduction(): bool
     {
 		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
 
@@ -283,20 +279,23 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $mvdbId
      * @return void
      */
-    public function setMvdbId()
+    public function setMvdbId(): void
     {
-        $this->setPlateIds();
-        $minPlateId = $this->getPlateIds() ? min($this->getPlateIds()) : '';
+        $minPlateId = $this->getPlateIds()->min();
         $this->mvdbId = $this->publisher->getShorthand() .
             '_' . $minPlateId;
 
-        foreach($this->publishedSubitems as $publishedSubitem) {
-            $publishedSubitem->setMvdbId(
-                $this->mvdbId . '_' .
-                $publishedSubitem->getPlateId() . '_' .
-                $publishedSubitem->getPart() . '_' .
-                $publishedSubitem->getVoice());
-        }
+        Collection::wrap($this->publishedSubitems)->
+            each( function($subitem) { $this->setSubitemMvdbId($subitem); } );
+    }
+
+    protected function setSubitemMvdbId(PublishedSubitem $subitem): void
+    {
+        $subitem->setMvdbId(
+            $this->mvdbId . '_' .
+            $subitem->getPlateId() . '_' .
+            $subitem->getPart() . '_' .
+            $subitem->getVoice());
     }
 
     /**
@@ -304,7 +303,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string type
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -315,7 +314,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param int $type
      * @return void
      */
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
     }
@@ -325,12 +324,11 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function __construct()
     {
-
         //Do not remove the next line: It would break the functionality
         $this->initializeObject();
     }
 
-    public function initializeObject()
+    public function initializeObject(): void
     {
         $this->containedWorks = new ObjectStorage();
         $this->editors = new ObjectStorage();
@@ -345,7 +343,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string $instrumentation
      */
-    public function getInstrumentation()
+    public function getInstrumentation(): string
     {
         return $this->instrumentation;
     }
@@ -356,7 +354,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $instrumentation
      * @return void
      */
-    public function setInstrumentation($instrumentation)
+    public function setInstrumentation($instrumentation): void
     {
         $this->instrumentation = $instrumentation;
     }
@@ -366,7 +364,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \Slub\MpdbCore\Domain\Model\Publisher $publisher
      */
-    public function getPublisher()
+    public function getPublisher(): Publisher
     {
         return $this->publisher;
     }
@@ -377,13 +375,10 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\MpdbCore\Domain\Model\Publisher $publisher
      * @return void
      */
-    public function setPublisher(Publisher $publisher = null)
+    public function setPublisher(Publisher $publisher = null): void
     {
-        $this->mvdbId = $this->getPlateIdFrom();
-        if ($publisher !== null) {
-            $this->mvdbId = $publisher->getShorthand() . '_' . $this->mvdbId;
-        }
         $this->publisher = $publisher;
+        $this->setMvdbId();
     }
 
     /**
@@ -391,7 +386,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string title
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -402,7 +397,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param int $title
      * @return void
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -413,11 +408,12 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\PublisherDb\Domain\Model\PublishedSubitem $publishedSubitem
      * @return void
      */
-    public function addPublishedSubitem(PublishedSubitem $publishedSubitem = null)
+    public function addPublishedSubitem(PublishedSubitem $publishedSubitem = null): void
     {
         if ($publishedSubitem != null) {
             $this->publishedSubitems->attach($publishedSubitem);
         }
+        $this->setMvdbId();
     }
 
     /**
@@ -426,7 +422,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\MpdbCore\Domain\Model\PublishedSubitem $publishedSubitemToRemove
      * @return void
      */
-    public function removePublishedSubitem(PublishedSubitem $publishedSubitemToRemove)
+    public function removePublishedSubitem(PublishedSubitem $publishedSubitemToRemove): void
     {
         $this->publishedSubitems->detach($publishedSubitemToRemove);
     }
@@ -437,7 +433,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmNorm\Domain\Model\GndWork $containedWork
      * @return void
      */
-    public function addContainedWork(GndWork $containedWork = null)
+    public function addContainedWork(GndWork $containedWork = null): void
     {
         if ($containedWork != null) {
             $this->containedWorks->attach($containedWork);
@@ -450,7 +446,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmNorm\Domain\Model\GndWork $containedWorkToRemove The Work to be removed
      * @return void
      */
-    public function removeContainedWork(GndWork $containedWorkToRemove)
+    public function removeContainedWork(GndWork $containedWorkToRemove): void
     {
         $this->containedWorks->detach($containedWorkToRemove);
     }
@@ -460,7 +456,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdbCore\Domain\Model\PublisherActions> publisherActions
      */
-    public function getPublisherActions()
+    public function getPublisherActions(): ObjectStorage
     {
         return array_merge(
         ...array_map(
@@ -476,9 +472,9 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Returns boolean indicating if there are publisherActions pointing
      * to the Makro
      * 
-     * @return boolean
+     * @return bool
      */
-    public function getHasPublisherActions()
+    public function getHasPublisherActions(): bool
     {
         $mikros = $this->getPublishedSubitems()->toArray();
         foreach ($mikros as $mikro) {
@@ -494,9 +490,9 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string
      */
-    public function getNumberOfMikroString()
+    public function getNumberOfMikroString(): string
     {
-        return $this->publishedSubitemRepository->getNumberOfMikroString($this);
+        return $this->publishedSubitems->count();
     }
 
     /**
@@ -504,7 +500,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdbCore\Domain\Model\PublishedSubitem> $publishedSubitems
      */
-    public function getPublishedSubitems()
+    public function getPublishedSubitems(): ObjectStorage
     {
         return $this->publishedSubitems;
     }
@@ -515,7 +511,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdbCore\Domain\Model\PublishedSubitem> $publishedSubitems
      * @return void
      */
-    public function setPublishedSubitems(ObjectStorage $publishedSubitems = null)
+    public function setPublishedSubitems(ObjectStorage $publishedSubitems = null): void
     {
         $publishedSubitems = $publishedSubitems ?? new ObjectStorage();
         $this->publishedSubitems = $publishedSubitems;
@@ -526,7 +522,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndWork> $containedWorks
      */
-    public function getContainedWorks()
+    public function getContainedWorks(): ObjectStorage
     {
         return $this->containedWorks;
     }
@@ -537,103 +533,10 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndWork> $containedWorks
      * @return void
      */
-    public function setContainedWorks(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $containedWorks = null)
+    public function setContainedWorks(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $containedWorks = null): void
     {
         $containedWorks = $containedWorks ?? new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $this->containedWorks = $containedWorks;
-    }
-
-    /**
-     * Returns the plateIdFrom
-     * 
-     * @return string $plateIdFrom
-     */
-    public function getPlateIdFrom()
-    {
-        // ??
-        return (new \SLUB\PublisherDb\Lib\DbArray())->set($this->getPublishedSubitems())->map(
-        function ($mikro) {
-            return $mikro->getPlateId();
-        }
-        )->reduce(
-        function ($a, $b) {
-            return $a < $b ? $a : $b;
-        }, 
-        '10000000'
-        );
-    }
-
-    /**
-     * Checks if current plateIdFrom is minimal plateId of contained Mikros
-     * 
-     * @param array $mikros
-     * @return void
-     */
-    public function minPlateIdFromAdd(array $mikros)
-    {
-        // throw away!!
-        $getPlateId = function(PublishedSubitem $publishedSubitem): string {
-            return $publishedSubitem->getPlateId();
-        };
-
-        $this->plateIdFrom = (new DbArray())
-            ->set( $mikros )
-            ->map( $getPlateId )
-            ->min();
-        $this->updateIdentifier();
-    }
-
-    /**
-     * Checks if current plateIdFrom is minimal plateId of contained Mikros
-     * 
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $mikros
-     * @param string $oldPlateId
-     * @return void
-     */
-    public function minPlateIdFromRemove(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $mikros, string $oldPlateId)
-    {
-        // throw away!
-        $min = '10000000';
-        $encounteredSameNumber = false;
-        foreach ($mikros as $mikro) {
-            if (!$encounteredSameNumber && $mikro->getPlateId() != $oldPlateId) {
-                continue;
-            }
-            if ($mikro->getPlateId() < $min) {
-                $min = $mikro->getPlateId();
-            }
-        }
-        $this->plateIdFrom = $min;
-        $this->updateIdentifier();
-    }
-
-    public function updateMvdbId() {
-        $getPlateId = function(PublishedSubitem $publishedSubitem): string {
-            return $publishedSubitem->getPlateId();
-        };
-
-        $this->plateIdFrom = (new DbArray())
-            ->set( $this->getPublishedSubitems()->toArray() )
-            ->map( $getPlateId )
-            ->min();
-
-        $this->mvdbId = $this->plateIdFrom;
-        if (!is_null($this->publisher)) {
-            $this->mvdbId = $this->publisher->getShorthand() . '_' . $this->plateIdFrom;
-        }
-    }
-    /**
-     * Updates Identifier according to publisher name and plateIdFrom
-     * 
-     * @return void
-     */
-    public function updateIdentifier()
-    {
-        // throw away!
-        $this->mvdbId = $this->plateIdFrom;
-        if (!is_null($this->publisher)) {
-            $this->mvdbId = $this->publisher->getShorthand() . '_' . $this->plateIdFrom;
-        }
     }
 
     /**
@@ -641,7 +544,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool $dataAcquisitionCertain
      */
-    public function getDataAcquisitionCertain()
+    public function getDataAcquisitionCertain(): bool
     {
         return $this->dataAcquisitionCertain;
     }
@@ -652,7 +555,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param bool $dataAcquisitionCertain
      * @return void
      */
-    public function setDataAcquisitionCertain($dataAcquisitionCertain)
+    public function setDataAcquisitionCertain($dataAcquisitionCertain): void
     {
         $this->dataAcquisitionCertain = $dataAcquisitionCertain;
     }
@@ -662,7 +565,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool
      */
-    public function isDataAcquisitionCertain()
+    public function isDataAcquisitionCertain(): bool
     {
         return $this->dataAcquisitionCertain;
     }
@@ -672,7 +575,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool $relatedPersonsKnown
      */
-    public function getRelatedPersonsKnown()
+    public function getRelatedPersonsKnown(): bool
     {
         return $this->relatedPersonsKnown;
     }
@@ -683,7 +586,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param bool $relatedPersonsKnown
      * @return void
      */
-    public function setRelatedPersonsKnown($relatedPersonsKnown)
+    public function setRelatedPersonsKnown($relatedPersonsKnown): void
     {
         $this->relatedPersonsKnown = $relatedPersonsKnown;
     }
@@ -693,7 +596,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool
      */
-    public function isRelatedPersonsKnown()
+    public function isRelatedPersonsKnown(): bool
     {
         return $this->relatedPersonsKnown;
     }
@@ -703,7 +606,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool $workExamined
      */
-    public function getWorkExamined()
+    public function getWorkExamined(): bool
     {
         return $this->workExamined;
     }
@@ -714,7 +617,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param bool $workExamined
      * @return void
      */
-    public function setWorkExamined($workExamined)
+    public function setWorkExamined($workExamined): void
     {
         $this->workExamined = $workExamined;
     }
@@ -724,7 +627,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool
      */
-    public function isWorkExamined()
+    public function isWorkExamined(): bool
     {
         return $this->workExamined;
     }
@@ -734,7 +637,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool $dataSetManuallyChecked
      */
-    public function getDataSetManuallyChecked()
+    public function getDataSetManuallyChecked(): bool
     {
         return $this->dataSetManuallyChecked;
     }
@@ -745,7 +648,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param bool $dataSetManuallyChecked
      * @return void
      */
-    public function setDataSetManuallyChecked($dataSetManuallyChecked)
+    public function setDataSetManuallyChecked(bool $dataSetManuallyChecked): void
     {
         $this->dataSetManuallyChecked = $dataSetManuallyChecked;
     }
@@ -755,7 +658,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool
      */
-    public function isDataSetManuallyChecked()
+    public function isDataSetManuallyChecked(): bool
     {
         return $this->dataSetManuallyChecked;
     }
@@ -765,7 +668,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool $containedWorksIdentified
      */
-    public function getContainedWorksIdentified()
+    public function getContainedWorksIdentified(): bool
     {
         return $this->containedWorksIdentified;
     }
@@ -776,7 +679,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param bool $containedWorksIdentified
      * @return void
      */
-    public function setContainedWorksIdentified($containedWorksIdentified)
+    public function setContainedWorksIdentified(bool $containedWorksIdentified): void
     {
         $this->containedWorksIdentified = $containedWorksIdentified;
     }
@@ -786,7 +689,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool
      */
-    public function isContainedWorksIdentified()
+    public function isContainedWorksIdentified(): bool
     {
         return $this->containedWorksIdentified;
     }
@@ -796,7 +699,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string $responsiblePerson
      */
-    public function getResponsiblePerson()
+    public function getResponsiblePerson(): GndPerson
     {
         return $this->responsiblePerson;
     }
@@ -807,7 +710,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $responsiblePerson
      * @return void
      */
-    public function setResponsiblePerson($responsiblePerson)
+    public function setResponsiblePerson(GndPerson $responsiblePerson): void
     {
         $this->responsiblePerson = $responsiblePerson;
     }
@@ -817,7 +720,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \DateTime $dateOfPublishing
      */
-    public function getDateOfPublishing()
+    public function getDateOfPublishing(): \DateTime
     {
         return $this->dateOfPublishing;
     }
@@ -828,7 +731,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \DateTime $dateOfPublishing
      * @return void
      */
-    public function setDateOfPublishing(\DateTime $dateOfPublishing)
+    public function setDateOfPublishing(\DateTime $dateOfPublishing): void
     {
         $this->dateOfPublishing = $dateOfPublishing;
     }
@@ -838,7 +741,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string mvdbId
      */
-    public function getMvdbId()
+    public function getMvdbId(): string
     {
         return $this->mvdbId;
     }
@@ -849,7 +752,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmOnt\Domain\Model\Instrument $instrument
      * @return void
      */
-    public function addInstrument($instrument)
+    public function addInstrument(Instrument $instrument): void
     {
         $this->instruments->attach($instrument);
     }
@@ -860,7 +763,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmOnt\Domain\Model\Instrument $instrumentToRemove The Instrument to be removed
      * @return void
      */
-    public function removeInstrument($instrumentToRemove)
+    public function removeInstrument(Instrument $instrumentToRemove): void
     {
 		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
         if ($instrumentToRemove->getGndId() == $extConf['pianoGndId']) {
@@ -874,7 +777,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Instrument> instruments
      */
-    public function getInstruments()
+    public function getInstruments(): ObjectStorage
     {
         return $this->instruments;
     }
@@ -885,7 +788,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Instrument> $instruments
      * @return void
      */
-    public function setInstruments(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $instruments)
+    public function setInstruments(ObjectStorage $instruments): void
     {
         $this->instruments = $instruments;
     }
@@ -896,7 +799,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmOnt\Domain\Model\Genre $genre
      * @return void
      */
-    public function addForm($form)
+    public function addForm(Genre $form): void
     {
         $this->form->attach($form);
     }
@@ -907,7 +810,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmOnt\Domain\Model\Genre $formToRemove The Form to be removed
      * @return void
      */
-    public function removeForm($formToRemove)
+    public function removeForm(Genre $formToRemove): void
     {
         $this->form->detach($formToRemove);
     }
@@ -917,7 +820,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Genre> form
      */
-    public function getForm()
+    public function getForm(): Genre
     {
         return $this->form;
     }
@@ -928,7 +831,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Genre> $form
      * @return void
      */
-    public function setForm(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $form)
+    public function setForm(ObjectStorage $form): void
     {
         $this->form = $form;
     }
@@ -939,7 +842,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmNorm\Domain\Model\GndPerson $editor
      * @return void
      */
-    public function addEditor(GndPerson $editor)
+    public function addEditor(GndPerson $editor): void
     {
         $this->editors->attach($editor);
     }
@@ -950,7 +853,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmNorm\Domain\Model\GndPerson $editorToRemove
      * @return void
      */
-    public function removeEditor(GndPerson $editorToRemove)
+    public function removeEditor(GndPerson $editorToRemove): void
     {
         $this->editors->detach($editorToRemove);
     }
@@ -960,7 +863,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndPerson>
      */
-    public function getEditors()
+    public function getEditors(): ObjectStorage
     {
         return $this->editors;
     }
@@ -971,7 +874,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndPerson> $editors
      * @return void
      */
-    public function setEditors(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $editors)
+    public function setEditors(ObjectStorage $editors): void
     {
         $this->editors = $editors;
     }
@@ -981,7 +884,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return int final
      */
-    public function getFinal()
+    public function getFinal(): int
     {
         return $this->final;
     }
@@ -992,24 +895,26 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param bool $final
      * @return void
      */
-    public function setFinal($final)
+    public function setFinal(bool $final): void
     {
-        $works = (new \SLUB\PublisherDb\Lib\DbArray())->set($this->getContainedWorks()->toArray());
-        $works->each(
-        function ($work) use($final) {
-            $work->updateFinal($final, $this);
-            $this->gndWorkRepository->update($work);
-        }
-        );
         $this->final = $final;
+        Collection::wrap($this->getContainedWorks()->toArray())->
+            each( function($work) { $this->updateFinalWork($work); } );
     }
+
+    protected function updateFinalWork(GndWork $work): void
+    {
+        $work->updateFinal($this->final, $this);
+        $this->gndWorkRepository->update($work);
+    }
+
 
     /**
      * Returns the language
      * 
      * @return string $language
      */
-    public function getLanguage()
+    public function getLanguage(): string
     {
         return $this->language;
     }
@@ -1020,7 +925,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $language
      * @return void
      */
-    public function setLanguage($language)
+    public function setLanguage($language): void
     {
         $this->language = $language;
     }
@@ -1031,7 +936,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmNorm\Domain\Model\GndPerson $firstComposer
      * @return void
      */
-    public function addFirstComposer(GndPerson $firstComposer)
+    public function addFirstComposer(GndPerson $firstComposer): void
     {
         $this->firstComposer->attach($firstComposer);
     }
@@ -1042,7 +947,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Slub\DmNorm\Domain\Model\GndPerson $firstComposerToRemove
      * @return void
      */
-    public function removeFirstComposer(GndPerson $firstComposerToRemove)
+    public function removeFirstComposer(GndPerson $firstComposerToRemove): void
     {
         $this->firstComposer->detach($firstComposerToRemove);
     }
@@ -1052,7 +957,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndPerson> $firstComposer
      */
-    public function getFirstComposer()
+    public function getFirstComposer(): ObjectStorage
     {
         return $this->firstComposer;
     }
@@ -1063,7 +968,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndPerson> $firstComposer
      * @return void
      */
-    public function setFirstComposer(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $firstComposer)
+    public function setFirstComposer(ObjectStorage $firstComposer): void
     {
         $this->firstComposer = $firstComposer;
     }
@@ -1073,24 +978,28 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string
      */
-    public function getComposers()
+    public function getComposers(): string
     {
-        if ($this->firstComposer && $this->firstComposer->toArray() != []) {
-            return (new \SLUB\PublisherDb\Lib\DbArray())->set($this->firstComposer)->map(
-            function ($composer) {
-                return $composer->getName();
-            }
-            )->unique()->implode('; ');
+        $composers = Collection::wrap($this->firstComposer);
+        if ($composers->count() > 0) {
+            return $composers->map( function ($composer) { return self::getComposerName($composer); } )->
+                unique()->
+                join('; ');
         }
-        return (new \SLUB\PublisherDb\Lib\DbArray())->set($this->getContainedWorks()->toArray())->map(
-        function ($work) {
-            return $work->getFirstComposer() ? $work->getFirstComposer()->getName() : '';
-        }
-        )->filter(
-        function ($name) {
-            return $name != '';
-        }
-        )->unique()->implode('; ');
+        return Collection::wrap($this->containedWorks->toArray())->
+            map( function($work) { return self::getWorkComposerName($work); } )->
+            unique()->
+            join(';');
+    }
+
+    protected static function getComposerName(GndPerson $composer): string
+    {
+        return $composer->getName();
+    }
+
+    protected static function getWorkComposerName(GndWork $work): string
+    {
+        return self::getComposerName($work->getFirstComposer());
     }
 
     /**
@@ -1098,19 +1007,25 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string $plateIds
      */
-    public function getPlateIds()
+    public function getPlateIds(): Collection
     {
-        return json_decode($this->plateIds);
+        return Collection::wrap($this->publishedSubitems)->
+            map( function($subitem) { return self::getSubitemPlateId($subitem); } );
     }
 
     /**
-     * Returns a string for plateIds
+     * Returns the plateIds as a newline separated string
      * 
-     * @return string $plateIdsString
+     * @return string $plateIds
      */
-    public function getPlateIdsString()
+    public function getPlateIdsString(): string
     {
-        return implode("\n", $this->getPlateIds());
+        return $this->getPlateIds()->join('\n');
+    }
+
+    protected static function getSubitemPlateId(PublishedSubitem $subitem): string
+    {
+        return $subitem->getPlateId();
     }
 
     /**
@@ -1118,7 +1033,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string $comment
      */
-    public function getComment()
+    public function getComment(): string
     {
         return $this->comment;
     }
@@ -1129,28 +1044,9 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $comment
      * @return void
      */
-    public function setComment($comment)
+    public function setComment(string $comment): void
     {
         $this->comment = $comment;
-    }
-
-    /**
-     * Sets the plateIds
-     * 
-     * @param string $plateIds
-     * @return void
-     */
-    public function setPlateIds()
-    {
-        $plateIds = [];
-
-        foreach($this->publishedSubitems as $publishedSubitem) {
-            if(!in_array($publishedSubitem->getPlateId(), $plateIds)) {
-                $plateIds[] = $publishedSubitem->getPlateId();
-            }
-        }
-
-        $this->plateIds = json_encode($plateIds);
     }
 
     /**
@@ -1159,20 +1055,20 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return bool
      */
-    public function getHasMikroWithoutWork()
+    public function getHasMikroWithoutWork(): bool
     {
-        $hasNoLinkedWorks = function (PublishedSubitem $mikro) {
-            return $mikro->getContainedWorks()->toArray() == [];
-        };
-        $or = function (bool $a, bool $b) {
-            return $a || $b;
-        };
-        return (new DbArray())->set($this->getPublishedSubitems())->map($hasNoLinkedWorks)->reduce($or, false);
+        return Collection::wrap($this->publishedSubitems)->
+            map(function ($subitem) { return self::subitemWithoutWorks($subitem); } )->
+            reduce(function ($a, $b) { return self::or($a, $b); } );
     }
 
-    // TODO
-    public function proposeDataAcquisitionCertain()
+    protected static function subitemWithoutWorks(PublishedSubitem $subitem): bool
     {
-        return false;
+        return $subitem->getContainedWorks()->count() > 0;
+    }
+
+    protected static function or(bool $a, bool $b): bool
+    {
+        return $a || $b;
     }
 }

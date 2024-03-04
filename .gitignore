@@ -1,0 +1,5 @@
+.idea/
+.Build/
+Build/testing-docker/.env
+composer.lock
+public/
