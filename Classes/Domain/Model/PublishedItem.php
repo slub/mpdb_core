@@ -282,8 +282,9 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setMvdbId(): void
     {
         $minPlateId = $this->getPlateIds()->min();
-        $this->mvdbId = $this->publisher->getShorthand() .
-            '_' . $minPlateId;
+        $this->mvdbId = $this->publisher ? 
+            $this->publisher->getShorthand() . '_' : '';
+        $this->mvdbId .= $minPlateId;
 
         Collection::wrap($this->publishedSubitems->toArray())->
             each( function($subitem) { $this->setSubitemMvdbId($subitem); } );
@@ -959,7 +960,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getComposers(): string
     {
-        $composers = Collection::wrap($this->firstComposer);
+        $composers = Collection::wrap($this->firstComposer->toArray());
         if ($composers->count() > 0) {
             return $composers->map( function ($composer) { return self::getComposerName($composer); } )->
                 unique()->

@@ -1,5 +1,9 @@
-.idea/
 .Build/
+.idea/
+.cache/
 Build/testing-docker/.env
-composer.lock
+bin/
 public/
+typo3temp/
+vendor/
+composer.lock

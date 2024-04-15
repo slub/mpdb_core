@@ -79,7 +79,7 @@ class CompleteGndWorksCommand extends Command
      *
      * @return void
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $countWorks = $this->workRepository->findAll()->count();
         $nonTitleWorks = $this->workRepository->findByTitle('');
