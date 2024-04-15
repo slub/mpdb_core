@@ -44,12 +44,13 @@
         "post-autoload-dump": [
             "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
         ],
-        "ci": [ "@ci:php", "@ci:tests" ],
+        "ci": [ "@ci:install", "@ci:php", "@ci:tests" ],
         "ci:php": [ "@ci:php:stan" ],
         "ci:php:stan": [ "Build/Scripts/runTests.sh -s phpstan" ],
         "ci:tests": [ "@ci:tests:unit", "@ci:tests:functional" ],
         "ci:tests:unit": [ "Build/Scripts/runTests.sh -s unit" ],
-        "ci:tests:functional": [ "Build/Scripts/runTests.sh -s functional" ]
+        "ci:tests:functional": [ "Build/Scripts/runTests.sh -s functional" ],
+        "ci:install": [ "Build/Scripts/runTests.sh -s composerInstall -b docker" ]
     },
     "extra": {
         "typo3/cms": {
