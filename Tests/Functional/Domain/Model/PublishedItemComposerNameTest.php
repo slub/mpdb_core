@@ -11,6 +11,7 @@ use Slub\MpdbCore\Domain\Model\PublishedItem;
 use Slub\MpdbCore\Domain\Model\PublishedSubitem;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -106,10 +107,15 @@ class PublishedItemComposerNameTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/empty_works.csv');
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $workRepository = $objectManager->get(GndWorkRepository::class);
-        $personRepository = $objectManager->get(GndPersonRepository::class);
-        $instrumentRepository = $objectManager->get(GndInstrumentRepository::class);
-        $genreRepository = $objectManager->get(GndGenreRepository::class);
+        $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $workRepository = GeneralUtility::makeInstance(GndWorkRepository::class, $objectManager);
+        $workRepository->injectPersistenceManager($persistenceManager);
+        $personRepository = GeneralUtility::makeInstance(GndPersonRepository::class, $objectManager);
+        $personRepository->injectPersistenceManager($persistenceManager);
+        $instrumentRepository = GeneralUtility::makeInstance(GndInstrumentRepository::class, $objectManager);
+        $instrumentRepository->injectPersistenceManager($persistenceManager);
+        $genreRepository = GeneralUtility::makeInstance(GndGenreRepository::class, $objectManager);
+        $genreRepository->injectPersistenceManager($persistenceManager);
 
         $this->work1->setGndId($this->gndId1)->pullGndInfo(
             $workRepository,
@@ -165,9 +171,6 @@ class PublishedItemComposerNameTest extends FunctionalTestCase
         $this->subject->addFirstComposer($this->composer1);
         $this->subject->addFirstComposer($this->composer2);
         $namesString = implode('; ', [$this->nameComposer1, $this->nameComposer2]);
-        var_dump($this->nameComposer1);
-        var_dump($this->nameComposer2);
-        var_dump($namesString);die;
 
         self::assertSame(
             $namesString,
