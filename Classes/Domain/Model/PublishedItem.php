@@ -426,6 +426,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function removePublishedSubitem(PublishedSubitem $publishedSubitemToRemove): void
     {
         $this->publishedSubitems->detach($publishedSubitemToRemove);
+        $this->setMvdbId();
     }
 
     /**
