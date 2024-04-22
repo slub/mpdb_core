@@ -55,8 +55,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_mpdbcore_domain_model_publishermakroitem',
-                'foreign_table_where' => 'AND {#tx_mpdbcore_domain_model_publishermakroitem}.{#pid}=###CURRENT_PID### AND {#tx_mpdbcore_domain_model_publishermakroitem}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_mpdbcore_domain_model_publisheditem',
+                'foreign_table_where' => 'AND {#tx_mpdbcore_domain_model_publisheditem}.{#pid}=###CURRENT_PID### AND {#tx_mpdbcore_domain_model_publisheditem}.{#sys_language_uid} IN (-1,0)',
             ],
         ],
         'l10n_diffsource' => [
@@ -420,7 +420,7 @@ return [
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_mpdbcore_domain_model_publishedsubitem',
-                'foreign_field' => 'published_item',
+                'foreign_field' => 'publisheditem',
                 'foreign_sortby' => 'sorting',
                 'maxitems' => 9999,
                 'appearance' => [

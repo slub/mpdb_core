@@ -1,19 +1,24 @@
 <?php
 namespace Slub\MpdbCore\Controller;
 
+use Elasticsearch\ClientBuilder;
+use Elasticsearch\Client;
 use Slub\DmNorm\Domain\Repository\GndInstrumentRepository;
 use Slub\DmNorm\Domain\Repository\GndGenreRepository;
 use Slub\DmOnt\Domain\Repository\GenreRepository as MpdbGenreRepository;
 use Slub\DmOnt\Domain\Repository\InstrumentRepository as MpdbInstrumentRepository;
 use Slub\DmOnt\Domain\Repository\MediumOfPerformanceRepository;
+use Slub\MpdbCore\Services\SearchServiceInterface;
+use Slub\MpdbCore\Services\SearchServiceNotFoundException;
 use Slub\MpdbCore\Domain\Repository\PublishedItemRepository;
+use Slub\MpdbCore\Domain\Repository\PublisherActionRepository;
 use Slub\MpdbCore\Domain\Repository\PublisherRepository;
 use Slub\DmNorm\Domain\Repository\GndPersonRepository;
 use Slub\DmNorm\Domain\Repository\GndWorkRepository;
 use Slub\MpdbCore\Common\ElasticClientBuilder;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
-use Elasticsearch\ClientBuilder;
-use Elasticsearch\Client;
 
 /***
  *
@@ -30,6 +35,11 @@ use Elasticsearch\Client;
  */
 class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+
+    /**
+     * default result count
+     */
+    const RESULT_COUNT = 25;
 
     /**
      * finality level
@@ -76,6 +86,13 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     /**
      * publisherRepository
      * 
+     * @var PublisherActionRepository
+     */
+    protected $publisherActionRepository = null;
+
+    /**
+     * publisherRepository
+     * 
      * @var PublisherRepository
      */
     protected $publisherRepository = null;
@@ -106,6 +123,26 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      * @var Client
      */
     protected $elasticClient = null;
+
+    protected ?ExtensionConfiguration $extConf = null;
+
+    protected ?SearchServiceInterface $searchService = null;
+
+    /**
+     * @throws SearchServiceNotFoundException
+     */
+    public function initializeAction(): void
+    {
+        $searchService = GeneralUtility::makeInstanceService('search');
+        if (is_object($searchService)) {
+            $this->searchService = $searchService;
+        } else {
+            throw new SearchServiceNotFoundException();
+        }
+
+        $this->searchService->
+            setSize(self::RESULT_COUNT);
+    }
 
     /**
      * @param GndGenreRepository $gndGenreRepository
@@ -170,6 +207,14 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     public function injectGndPersonRepository(GndPersonRepository $gndPersonRepository)
     {
         $this->gndPersonRepository = $gndPersonRepository;
+    }
+
+    /**
+     * @param PublisherActionRepository $publisherActionRepository
+     */
+    public function injectPublisherActionRepository(PublisherActionRepository $publisherActionRepository)
+    {
+        $this->publisherActionRepository = $publisherActionRepository;
     }
 
     /**

@@ -62,11 +62,18 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $activeTo = null;
 
     /**
-     * publisherMakroItems
+     * publishedItems
      * 
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherMakroItem>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\MpdbCore\Domain\Model\PublishedItem>
      */
-    protected $publisherMakroItems = null;
+    protected $publishedItems = null;
+
+    /**
+     * responsiblePersons
+     * 
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\DmNorm\Domain\Model\GndPerson>
+     */
+    protected $responsiblePersons = null;
 
     /**
      * __construct
@@ -89,7 +96,7 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected function initStorageObjects()
     {
         $this->responsiblePersons = new ObjectStorage();
-        $this->publisherMikroItems = new ObjectStorage();
+        $this->publishedItems = new ObjectStorage();
     }
 
     /**
@@ -223,9 +230,9 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
      */
-    public function getPublisherMakroItems()
+    public function getPublishedItems()
     {
-        return $this->publisherMakroItems;
+        return $this->publishedItems;
     }
 
     /**
@@ -237,7 +244,7 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setPublisherMakroItems(ObjectStorage $publisherMakroItems = null)
     {
         $publisherMakroItems = $publisherMakroItems ?? new ObjectStorage();
-        $this->publisherMakroItems = $publisherMakroItems;
+        $this->publishedItems = $publisherMakroItems;
     }
 
 }

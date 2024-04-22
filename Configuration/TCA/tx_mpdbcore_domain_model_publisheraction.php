@@ -186,8 +186,7 @@ return [
                 'default' => 0,
             ]
         ],
-    
-        'publishermikroitem' => [
+        'publishedsubitem' => [
             'config' => [
                 'type' => 'passthrough',
             ],

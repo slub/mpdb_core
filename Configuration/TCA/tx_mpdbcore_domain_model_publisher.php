@@ -176,32 +176,5 @@ return [
                 'default' => null,
             ],
         ],
-        'responsible_persons' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisher.responsible_persons',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => 'tx_mpdbcore_domain_model_role',
-                'MM' => 'tx_mpdbcore_publisher_role_mm',
-                'size' => 10,
-                'autoSizeMax' => 30,
-                'maxitems' => 9999,
-                'multiple' => 0,
-                'fieldControl' => [
-                    'editPopup' => [
-                        'disabled' => false,
-                    ],
-                    'addRecord' => [
-                        'disabled' => false,
-                    ],
-                    'listModule' => [
-                        'disabled' => true,
-                    ],
-                ],
-            ],
-            
-        ],
-    
     ],
 ];

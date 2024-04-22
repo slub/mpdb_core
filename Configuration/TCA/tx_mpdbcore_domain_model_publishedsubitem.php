@@ -256,7 +256,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => 'tx_dmnorm_domain_model_work',
+                'foreign_table' => 'tx_dmnorm_domain_model_gndwork',
                 'MM' => 'tx_mpdbcore_publishedsubitem_work_mm',
                 'size' => 10,
                 'autoSizeMax' => 30,
@@ -282,7 +282,7 @@ return [
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_mpdbcore_domain_model_publisheraction',
-                'foreign_field' => 'published_subitem',
+                'foreign_field' => 'publishedsubitem',
                 'foreign_sortby' => 'sorting',
                 'maxitems' => 9999,
                 'appearance' => [

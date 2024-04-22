@@ -2,6 +2,7 @@
 
 namespace Slub\MpdbCore\Command;
 
+use Elastic\Elasticsearch\Client;
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,6 +29,16 @@ class IndexCommand extends Command
     const PUBLISHED_ITEM_INDEX = 'published_item';
     const WORK_INDEX = 'work';
     const PERSON_INDEX = 'person';
+
+    const NAME_COLNAME = 'name';
+    const SHORTHAND_COLNAME = 'shorthand';
+    const PUBLIC_COLNAME = 'public';
+    const PUBLISHER_TABLE_NAME = 'tx_mpdbcore_domain_model_publisher';
+    const PUBLISHER_INDEX_NAME = 'publishers';
+
+    protected string $prefix = '';
+    protected ?Client $client = null;
+    protected ?ExtensionConfiguration $extConf = null;
 
     protected static $personData = [
         [ 'name', '', 'string' ],
@@ -504,7 +515,10 @@ class IndexCommand extends Command
 
     protected $indexList;
 
-    protected function initialize(InputInterface $input, OutputInterface $output) {
+    protected ?SymfonyStyle $io = null;
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
         $this->dataObjectList = [
             'person' => [
                 'table' => 'tx_dmnorm_domain_model_gndperson',
@@ -588,19 +602,27 @@ class IndexCommand extends Command
                 'fields' => self::$genreData
             ]
         ];
+
         $this->indexList = [
             self::PUBLISHED_ITEM_INDEX => self::$publishedItemSeq,
             self::PERSON_INDEX => self::$personSeq,
             self::WORK_INDEX => self::$workSeq
         ];
+
+		$this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
+        $this->prefix = $this->extConf['prefix'];
+
+        $this->client = ElasticClientBuilder::create()->
+            autoconfig()->
+            build();
     }
 
     /**
      * Executes the command to build indices from Database
      *
-     * @return void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         //$this->initialize();
 
@@ -616,6 +638,8 @@ class IndexCommand extends Command
         $this->io->section('Committing Indices');
         $this->commitIndices();
 
+        $this->io->section('Indexing Publishers');
+        $this->indexPublishers();
 
         $this->io->success('All indices built and committed.');
         return 0;
@@ -623,29 +647,61 @@ class IndexCommand extends Command
     }
 
     /**
+     * Indexes public publishers
+     *
+     * @return void
+     */
+    protected function indexPublishers(): void
+    {
+        $qb = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(self::PUBLISHER_TABLE_NAME);
+        $qb->select(
+                'uid',
+                self::NAME_COLNAME . ' AS name',
+                self::SHORTHAND_COLNAME . ' AS shorthand',
+                self::PUBLIC_COLNAME . ' AS public'
+            )->
+            from(self::PUBLISHER_TABLE_NAME);
+
+        if ($this->client->indices()->exists(['index' => $this->prefix . self::PUBLISHER_INDEX_NAME])) {
+            $this->client->indices()->delete(['index' => $this->prefix . self::PUBLISHER_INDEX_NAME]);
+        }
+
+        Collection::wrap($qb->execute()->fetchAll())->
+            filter(function ($publisher) { return self::isPublic($publisher); })->
+            each(function ($publisher) { self::indexPublisher($publisher); });
+    }
+
+    private static function isPublic(array $publisher): bool {
+        return (bool) $publisher[self::PUBLIC_COLNAME];
+    }
+
+    private function indexPublisher(array $publisher): void {
+        unset($publisher[self::PUBLIC_COLNAME]);
+
+        $params = [
+            'index' => $this->prefix . self::PUBLISHER_INDEX_NAME,
+            'id' => $publisher['uid'],
+            'body' => $publisher ];
+
+        $this->client->index($params);
+    }
+
+    /**
      * Commits indices to Elasticsearch
      *
      * @return void
      */
-    protected function commitIndices() {
-		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
-        $prefix = $extConf['prefix'];
-        $client = ElasticClientBuilder::create()->
-            autoconfig()->
-            build();
-
+    protected function commitIndices(): void
+    {
 
         foreach ($this->indices as $name => $index) {
             $this->io->text('Committing the ' . $name . ' index');
             $idField = $this->dataObjectList[$name]['key'];
-            //$indexName = Collection::wrap([ $extConf['prefix'], $name ]).join('_');
 
             $params = [];
             $params = [ 'body' => [] ];
             $bulkCount = 0;
-            $client = ElasticClientBuilder::create()->
-                autoconfig()->
-                build();
 
             $this->io->progressStart(count($index));
             foreach ($index as $document) {
@@ -653,38 +709,38 @@ class IndexCommand extends Command
                 $this->io->progressAdvance();
                 $params['body'][] = [ 'index' => 
                     [ 
-                        '_index' => 'temp' . $prefix . $name,
+                        '_index' => 'temp' . $this->prefix . $name,
                         '_id' => $document[$idField]
                     ] 
                 ];
                 $params['body'][] = json_encode($document);
 
                 // commit bulk
-                if (!(++$bulkCount % $extConf['bulkSize'])) {
-                    $client->bulk($params);
+                if (!(++$bulkCount % $this->extConf['bulkSize'])) {
+                    $this->client->bulk($params);
                     $params = [ 'body' => [] ];
                 }
             }
             $this->io->progressFinish();
-            $client->bulk($params);
+            $this->client->bulk($params);
 
-            if ($client->indices()->exists(['index' => $prefix . $name])) {
-                $client->indices()->delete(['index' => $prefix . $name]);
+            if ($this->client->indices()->exists(['index' => $this->prefix . $name])) {
+                $this->client->indices()->delete(['index' => $this->prefix . $name]);
             }
 
             $params = [
-                'index' => 'temp' . $prefix . $name,
+                'index' => 'temp' . $this->prefix . $name,
                 'body' => [
                     'index.blocks.write' => TRUE
                 ]
             ];
-            $client->indices()->putSettings($params);
+            $this->client->indices()->putSettings($params);
             $params = [
-                'index' => 'temp' . $prefix . $name,
-                'target' => $prefix . $name
+                'index' => 'temp' . $this->prefix . $name,
+                'target' => $this->prefix . $name
             ];
-            $client->indices()->clone($params);
-            $client->indices()->delete(['index' => 'temp' . $prefix . $name]);
+            $this->client->indices()->clone($params);
+            $this->client->indices()->delete(['index' => 'temp' . $this->prefix . $name]);
         }
     }
 
@@ -693,7 +749,8 @@ class IndexCommand extends Command
      *
      * @return array
      */
-    protected static function getSelectStmt(array $fields = null, bool $mm) {
+    protected static function getSelectStmt(array $fields = null, bool $mm): array
+    {
         if ($mm) {
             return [ 'uid_local', 'uid_foreign' ];
         }
@@ -715,7 +772,8 @@ class IndexCommand extends Command
      *
      * @return void
      */
-    protected function fetchObjects() {
+    protected function fetchObjects(): void
+    {
         foreach ($this->dataObjectList as $name => $object) {
             $mm = preg_match('/_mm/', $name) ? TRUE : FALSE;
             $fields = isset($object['fields']) ? $object['fields'] : null;
@@ -744,7 +802,8 @@ class IndexCommand extends Command
      *
      * @return array
      */
-    protected function buildIndex($indexSeq) {
+    protected function buildIndex($indexSeq): array
+    {
         // TODO rewrite to static function?
         $buffer = [];
         foreach ($indexSeq as $step) {
@@ -786,7 +845,8 @@ class IndexCommand extends Command
      * @param array $bufferedObject
      * @return array
      */
-    protected function index(array $config, array $bufferedObject = null) {
+    protected function index(array $config, array $bufferedObject = null): array
+    {
         $indexedObjects = [];
 
         if ($config['mm']) {
@@ -818,9 +878,10 @@ class IndexCommand extends Command
     /**
      * Builds indices
      *
-     * @return array
+     * @return void
      */
-    protected function buildIndices() {
+    protected function buildIndices(): void
+    {
         $this->io->text('Separating Publisher Actions');
         $this->dataObjects['prints'] = [];
         $this->dataObjects['sales'] = [];
@@ -852,15 +913,15 @@ class IndexCommand extends Command
     /**
      * Pre-Execution configuration
      *
-     * @return array
+     * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setHelp('Update elasticsearch index.');
         $this->setDescription('Updating the elasticsearch index.');
     }
 
-    protected function correctDatatypes(array $data, array $tables)
+    protected function correctDatatypes(array $data, array $tables): array
     {
         $mapper = [];
         foreach($tables as $key => $table) {
