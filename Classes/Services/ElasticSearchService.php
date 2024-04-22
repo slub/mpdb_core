@@ -2,7 +2,7 @@
 
 namespace Slub\MpdbCore\Services;
 
-use Elastic\Elasticsearch\Client;
+use Elasticsearch\Client;
 use Illuminate\Support\Collection;
 use Slub\MpdbCore\Domain\Model\Publisher;
 use Slub\MpdbCore\Common\ElasticClientBuilder;
