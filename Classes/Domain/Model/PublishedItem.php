@@ -4,8 +4,8 @@ namespace Slub\MpdbCore\Domain\Model;
 use Illuminate\Support\Collection;
 use Slub\DmNorm\Domain\Model\GndWork;
 use Slub\DmNorm\Domain\Model\GndPerson;
-use Slub\DmOnt\Domain\Model\Instrument;
-use Slub\DmOnt\Domain\Model\Genre;
+use Slub\DmNorm\Domain\Model\GndInstrument;
+use Slub\DmNorm\Domain\Model\GndGenre;
 use Slub\MpdbCore\Lib\DbArray;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -203,20 +203,20 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $editors = null;
 
     /**
-     * instruments
+     * gndInstrument
      * 
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndInstrument>
      * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
-    protected $instruments = null;
+    protected $gndInstrument = null;
 
     /**
-     * form
+     * gndGenre
      * 
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndGenre>
      * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
-    protected $form = null;
+    protected $gndGenre = null;
 
     /**
      * firstComposer
@@ -266,7 +266,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
         $pianoId = $extConf['pianoGndId'];
         $pianoIsLinked = false;
-        foreach($this->instruments as $instrument)
+        foreach($this->gndInstrument as $instrument)
             if ($instrument->getGndId() == $pianoId)
                 $pianoIsLinked = true;
 
@@ -333,8 +333,8 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->containedWorks = new ObjectStorage();
         $this->editors = new ObjectStorage();
-        $this->instruments = new ObjectStorage();
-        $this->form = new ObjectStorage();
+        $this->gndInstrument = new ObjectStorage();
+        $this->gndGenre = new ObjectStorage();
         $this->firstComposer = new ObjectStorage();
         $this->publishedSubitems = new ObjectStorage();
     }
@@ -728,93 +728,93 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Adds an Instrument
+     * Adds an GndInstrument
      * 
-     * @param \Slub\DmOnt\Domain\Model\Instrument $instrument
+     * @param \Slub\DmNorm\Domain\Model\GndInstrument $gndInstrument
      * @return void
      */
-    public function addInstrument(Instrument $instrument): void
+    public function addGndInstrument(GndInstrument $gndInstrument): void
     {
-        $this->instruments->attach($instrument);
+        $this->gndInstrument->attach($gndInstrument);
     }
 
     /**
      * Removes a
      * 
-     * @param \Slub\DmOnt\Domain\Model\Instrument $instrumentToRemove The Instrument to be removed
+     * @param \Slub\DmOnt\Domain\Model\GndInstrument $gndInstrumentToRemove The Instrument to be removed
      * @return void
      */
-    public function removeInstrument(Instrument $instrumentToRemove): void
+    public function removeGndInstrument(GndInstrument $gndInstrumentToRemove): void
     {
-		$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
-        if ($instrumentToRemove->getGndId() == $extConf['pianoGndId']) {
+        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
+        if ($gndInstrumentToRemove->getGndId() == $extConf['pianoGndId']) {
             $this->pianoCombination = "";
         }
-        $this->instruments->detach($instrumentToRemove);
+        $this->gndInstrument->detach($gndInstrumentToRemove);
     }
 
     /**
-     * Returns the instruments
+     * Returns the gndInstrument
      * 
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Instrument> instruments
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndInstrument> gndInstrument
      */
-    public function getInstruments(): ObjectStorage
+    public function getGndInstrument(): ObjectStorage
     {
-        return $this->instruments;
+        return $this->gndInstrument;
     }
 
     /**
-     * Sets the instruments
+     * Sets the gndInstruments
      * 
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Instrument> $instruments
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\GndInstrument> $gndInstrument
      * @return void
      */
-    public function setInstruments(ObjectStorage $instruments): void
+    public function setGndInstrument(ObjectStorage $gndInstrument): void
     {
-        $this->instruments = $instruments;
+        $this->gndInstrument = $gndInstrument;
     }
 
     /**
      * Adds a
      * 
-     * @param \Slub\DmOnt\Domain\Model\Genre $genre
+     * @param \Slub\DmNorm\Domain\Model\GndGenre $genre
      * @return void
      */
-    public function addForm(Genre $form): void
+    public function addForm(GndGenre $gndGenre): void
     {
-        $this->form->attach($form);
+        $this->gndGenre->attach($gndGenre);
     }
 
     /**
      * Removes a
      * 
-     * @param \Slub\DmOnt\Domain\Model\Genre $formToRemove The Form to be removed
+     * @param \Slub\DmNorm\Domain\Model\GndGenre $gndGenreToRemove The Form to be removed
      * @return void
      */
-    public function removeForm(Genre $formToRemove): void
+    public function removeForm(GndGenre $gndGenreToRemove): void
     {
-        $this->form->detach($formToRemove);
+        $this->gndGenre->detach($gndGenreToRemove);
     }
 
     /**
-     * Returns the form
+     * Returns the gndGenre
      * 
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Genre> form
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\GndGenre> gndGenre
      */
-    public function getGenre(): ObjectStorage
+    public function getGndGenre(): ObjectStorage
     {
-        return $this->form;
+        return $this->gndGenre;
     }
 
     /**
-     * Sets the form
+     * Sets the gndGenre
      * 
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\Genre> $form
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\GndGenre> $gndGenre
      * @return void
      */
-    public function setGenre(ObjectStorage $form): void
+    public function setGndGenre(ObjectStorage $gndGenre): void
     {
-        $this->form = $form;
+        $this->gndGenre = $gndGenre;
     }
 
     /**

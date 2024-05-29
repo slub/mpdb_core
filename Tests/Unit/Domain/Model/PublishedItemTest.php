@@ -387,7 +387,7 @@ class PublishedItemTest extends UnitTestCase
         $newObjectStorage = new ObjectStorage();
         self::assertEquals(
             $newObjectStorage,
-            $this->subject->getInstruments()
+            $this->subject->getGndInstrument()
         );
     }
 
@@ -399,11 +399,11 @@ class PublishedItemTest extends UnitTestCase
         $instrument = new GndInstrument;
         $objectStorageHoldingExactlyOneInstruments = new ObjectStorage();
         $objectStorageHoldingExactlyOneInstruments->attach($instrument);
-        $this->subject->setInstruments($objectStorageHoldingExactlyOneInstruments);
+        $this->subject->setGndInstrument($objectStorageHoldingExactlyOneInstruments);
 
         self::assertSame(
             $objectStorageHoldingExactlyOneInstruments,
-            $this->subject->getInstruments()
+            $this->subject->getGndInstrument()
         );
     }
 
@@ -415,7 +415,7 @@ class PublishedItemTest extends UnitTestCase
         $newObjectStorage = new ObjectStorage();
         self::assertEquals(
             $newObjectStorage,
-            $this->subject->getGenre()
+            $this->subject->getGndGenre()
         );
     }
 
@@ -427,11 +427,11 @@ class PublishedItemTest extends UnitTestCase
         $form = new GndGenre();
         $objectStorageHoldingExactlyOneForm = new ObjectStorage();
         $objectStorageHoldingExactlyOneForm->attach($form);
-        $this->subject->setGenre($objectStorageHoldingExactlyOneForm);
+        $this->subject->setGndGenre($objectStorageHoldingExactlyOneForm);
 
         self::assertSame(
             $objectStorageHoldingExactlyOneForm,
-            $this->subject->getGenre()
+            $this->subject->getGndGenre()
         );
     }
 
