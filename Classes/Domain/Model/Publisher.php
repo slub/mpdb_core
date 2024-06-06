@@ -69,13 +69,6 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $publishedItems = null;
 
     /**
-     * responsiblePersons
-     * 
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\DmNorm\Domain\Model\GndPerson>
-     */
-    protected $responsiblePersons = null;
-
-    /**
      * __construct
      */
     public function __construct()
@@ -95,7 +88,6 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->responsiblePersons = new ObjectStorage();
         $this->publishedItems = new ObjectStorage();
     }
 
