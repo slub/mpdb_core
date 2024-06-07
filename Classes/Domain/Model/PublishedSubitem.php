@@ -111,14 +111,14 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * containedWorks
      * 
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\DmNorm\Domain\Model\GndWork>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndWork>
      */
     protected $containedWorks = null;
 
     /**
      * publisherActions
      * 
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\MpdbCore\Domain\Model\PublisherAction>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdbCore\Domain\Model\PublisherAction>
      */
     protected $publisherActions = null;
 
@@ -284,7 +284,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a PublisherAction
      * 
-     * @param \SLUB\MpdbCore\Domain\Model\PublisherAction $publisherAction
+     * @param \Slub\MpdbCore\Domain\Model\PublisherAction $publisherAction
      * @return void
      */
     public function addPublisherAction(PublisherAction $publisherAction = null)
@@ -297,7 +297,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a PublisherAction
      * 
-     * @param \SLUB\MpdbCore\Domain\Model\PublisherAction $publisherActionToRemove The PublisherAction to be removed
+     * @param \Slub\MpdbCore\Domain\Model\PublisherAction $publisherActionToRemove The PublisherAction to be removed
      * @return void
      */
     public function removePublisherAction(PublisherAction $publisherActionToRemove)
@@ -308,7 +308,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the publisherActions
      * 
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\MpdCore\Domain\Model\PublisherAction> publisherActions
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdCore\Domain\Model\PublisherAction> publisherActions
      */
     public function getPublisherActions()
     {
@@ -318,7 +318,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the publisherActions
      * 
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\MpdCore\Domain\Model\PublisherAction> $publisherActions
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdCore\Domain\Model\PublisherAction> $publisherActions
      * @return void
      */
     public function setPublisherActions(ObjectStorage $publisherActions = null)
@@ -330,7 +330,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a Work
      * 
-     * @param \SLUB\DmNorm\Domain\Model\GndWork $containedWork
+     * @param \Slub\DmNorm\Domain\Model\GndWork $containedWork
      * @return void
      */
     public function addContainedWork(GndWork $containedWork = null)
@@ -343,7 +343,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a Work
      * 
-     * @param \SLUB\DmOnt\Domain\Model\GndWork $containedWorkToRemove The Work to be removed
+     * @param \Slub\DmOnt\Domain\Model\GndWork $containedWorkToRemove The Work to be removed
      * @return void
      */
     public function removeContainedWork(GndWork $containedWorkToRemove)
@@ -354,7 +354,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the containedWorks
      * 
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\DmOnt\Domain\Model\GndWork> containedWorks
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\GndWork> containedWorks
      */
     public function getContainedWorks()
     {
@@ -364,7 +364,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the containedWorks
      * 
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\DmOnt\Domain\Model\GndWork> $containedWorks
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\GndWork> $containedWorks
      * @return void
      */
     public function setContainedWorks(ObjectStorage $containedWorks = null)

@@ -64,7 +64,7 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * publishedItems
      * 
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\MpdbCore\Domain\Model\PublishedItem>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdbCore\Domain\Model\PublishedItem>
      */
     protected $publishedItems = null;
 
@@ -220,7 +220,7 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the publisherMakroItems
      * 
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
      */
     public function getPublishedItems()
     {
@@ -230,7 +230,7 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the publisherMakroItems
      * 
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
      * @return void
      */
     public function setPublisherMakroItems(ObjectStorage $publisherMakroItems = null)

@@ -188,7 +188,7 @@ class PublisherAction extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns a copy of the publisherAction
      * 
-     * @return \SLUB\PublisherDb\Domain\Model\PublisherAction
+     * @return \Slub\PublisherDb\Domain\Model\PublisherAction
      */
     public function getCopy()
     {

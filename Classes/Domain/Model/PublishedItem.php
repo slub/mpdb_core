@@ -61,7 +61,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * personRepository
      * 
      * @TYPO3\CMS\Extbase\Annotation\Inject
-     * @var \SLUB\PublisherDb\Domain\Repository\PersonRepository
+     * @var \Slub\PublisherDb\Domain\Repository\PersonRepository
      */
     //public $personRepository = null;
 
