@@ -59,7 +59,7 @@ class CompleteGndWorksCommand extends Command
 
     protected ?SymfonyStyle $io = null;
 
-    protected ?ExtensionConfiguration $extConf = null;
+    protected array $extConf = [];
 
     /**
      * formRepository
@@ -93,7 +93,7 @@ class CompleteGndWorksCommand extends Command
             $text = ++$count . '/' . $workCount;
             $text .= ' Fetching ' . $work->getGndId();
             $this->io->text($text);
-            $work->getGndInfo(
+            $work->pullGndInfo(
                 $this->workRepository,
                 $this->personRepository,
                 $this->instrumentRepository, 

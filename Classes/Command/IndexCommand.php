@@ -38,7 +38,7 @@ class IndexCommand extends Command
 
     protected string $prefix = '';
     protected ?Client $client = null;
-    protected ?ExtensionConfiguration $extConf = null;
+    protected array $extConf = [];
 
     protected static $personData = [
         [ 'name', '', 'string' ],
@@ -91,7 +91,7 @@ class IndexCommand extends Command
         [ 'date_of_action', '', 'date' ],
         [ 'type', '', 'string' ],
         [ 'inferred', '', 'bool' ],
-        [ 'publishermikroitem', 'published_subitem', '' ],
+        [ 'publishedsubitem', 'published_subitem', '' ],
         [ 'certain', '', 'bool' ] ];
 
     protected static $publishedItemSeq = [
@@ -609,7 +609,7 @@ class IndexCommand extends Command
             self::WORK_INDEX => self::$workSeq
         ];
 
-		$this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
+        $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
         $this->prefix = $this->extConf['prefix'];
 
         $this->client = ElasticClientBuilder::create()->
@@ -663,7 +663,7 @@ class IndexCommand extends Command
             )->
             from(self::PUBLISHER_TABLE_NAME);
 
-        if ($this->client->indices()->exists(['index' => $this->prefix . self::PUBLISHER_INDEX_NAME])) {
+        if ($this->client->indices()->exists(['index' => $this->prefix . self::PUBLISHER_INDEX_NAME])->asString()) {
             $this->client->indices()->delete(['index' => $this->prefix . self::PUBLISHER_INDEX_NAME]);
         }
 
@@ -724,7 +724,7 @@ class IndexCommand extends Command
             $this->io->progressFinish();
             $this->client->bulk($params);
 
-            if ($this->client->indices()->exists(['index' => $this->prefix . $name])) {
+            if ($this->client->indices()->exists(['index' => $this->prefix . $name])->asBool()) {
                 $this->client->indices()->delete(['index' => $this->prefix . $name]);
             }
 
