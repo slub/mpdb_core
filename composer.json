@@ -11,8 +11,8 @@
     "require": {
         "typo3/cms-core": "^11",
         "typo3/cms-reports": "^11",
-        "elasticsearch/elasticsearch": "^7",
-        "slub/dm-ont": "dev-test",
+        "elasticsearch/elasticsearch": "^8",
+        "slub/dm-ont": "dev-dev",
         "fluidtypo3/vhs": "^6",
         "illuminate/collections": "^8"
     },
