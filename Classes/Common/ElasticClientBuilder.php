@@ -7,7 +7,7 @@
 namespace Slub\MpdbCore\Common;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Elastic\Elasticsearch\ClientBuilder;
+use Elasticsearch\ClientBuilder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 class ElasticClientBuilder extends ClientBuilder {
