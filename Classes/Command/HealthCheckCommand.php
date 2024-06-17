@@ -132,7 +132,7 @@ class HealthCheckCommand extends Command
             $this->io->progressAdvance();
             $oldTitle = $work->getFullTitle();
             $work->setFullTitle();
-            $work->setPublishers();
+            //$work->setPublishers();
             $newTitle = $work->getFullTitle();
             if ($newTitle != $oldTitle) {
                 $this->io->text('Changing ' . $oldTitle . ' to ' . $newTitle . ' in ' . $work->getGndId() . '.');
