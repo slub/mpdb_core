@@ -412,7 +412,6 @@ return [
                     ],
                 ],
             ],
-            
         ],
         'published_subitems' => [
             'exclude' => true,
