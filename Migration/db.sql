@@ -28,3 +28,4 @@ alter table tx_publisherdb_work_instrument_mm rename to tx_dmnorm_gndwork_gndins
 alter table tx_publisherdb_work_mvdbgenre_mm rename to tx_dmont_work_genre_mm;
 alter table tx_mpdbcore_domain_model_publishedsubitem CHANGE `publisher_makro_item` `publisheditem` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 alter table tx_mpdbcore_domain_model_publisheditem CHANGE `publisher_mikro_item` `published_subitem` INT(10) UNSIGNED NOT NULL DEFAULT '0';
+alter table tx_dmnorm_domain_model_gndgenre CHANGE `super_form` `super_gnd_genre` INT(10) UNSIGNED NOT NULL DEFAULT '0';
