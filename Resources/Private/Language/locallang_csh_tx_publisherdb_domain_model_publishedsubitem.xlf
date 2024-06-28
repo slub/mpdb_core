@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:publisher_db/Resources/Private/Language/locallang_csh" date="2022-12-19T13:20:31Z" product-name="publisher_db">
+		<header/>
+		<body>
+			<trans-unit id="plate_id.description" resname="plate_id.description">
+				<source>plateId</source>
+			</trans-unit>
+			<trans-unit id="part.description" resname="part.description">
+				<source>part</source>
+			</trans-unit>
+			<trans-unit id="voice.description" resname="voice.description">
+				<source>voice</source>
+			</trans-unit>
+			<trans-unit id="price.description" resname="price.description">
+				<source>price</source>
+			</trans-unit>
+			<trans-unit id="comment.description" resname="comment.description">
+				<source>comment</source>
+			</trans-unit>
+			<trans-unit id="is_piano_reduction.description" resname="is_piano_reduction.description">
+				<source>isPianoReduction</source>
+			</trans-unit>
+			<trans-unit id="piano_reduction_type.description" resname="piano_reduction_type.description">
+				<source>pianoReductionType</source>
+			</trans-unit>
+			<trans-unit id="date_of_publishing.description" resname="date_of_publishing.description">
+				<source>dateOfPublishing</source>
+			</trans-unit>
+			<trans-unit id="has_negative_store.description" resname="has_negative_store.description">
+				<source>hasNegativeStore</source>
+			</trans-unit>
+			<trans-unit id="approve_negative_store.description" resname="approve_negative_store.description">
+				<source>approveNegativeStore</source>
+			</trans-unit>
+			<trans-unit id="start_store.description" resname="start_store.description">
+				<source>startStore</source>
+			</trans-unit>
+			<trans-unit id="db_identifier.description" resname="db_identifier.description">
+				<source>dbIdentifier</source>
+			</trans-unit>
+			<trans-unit id="contained_works.description" resname="contained_works.description">
+				<source>containedWorks</source>
+			</trans-unit>
+			<trans-unit id="publisher_actions.description" resname="publisher_actions.description">
+				<source>publisherActions</source>
+			</trans-unit>
+			<trans-unit id="publisher_makro_item.description" resname="publisher_makro_item.description">
+				<source>publisherMakroItem</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

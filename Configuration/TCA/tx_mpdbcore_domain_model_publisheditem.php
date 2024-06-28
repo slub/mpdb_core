@@ -21,10 +21,10 @@ return [
         'iconfile' => 'EXT:mpdb_core/Resources/Public/Icons/tx_mpdbcore_domain_model_publishermakroitem.gif'
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, type, instrumentation, data_acquisition_certain, related_persons_known, work_examined, data_set_manually_checked, contained_works_identified, responsible_person, date_of_publishing, final, language, id, comment, contained_works, editors, instruments, form, first_composer, published_subitems, publisher',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, type, instrumentation, data_acquisition_certain, related_persons_known, work_examined, data_set_manually_checked, contained_works_identified, responsible_person, date_of_publishing, final, language, id, comment, contained_works, editors, instruments, genre, first_composer, published_subitems, publisher',
     ],
     'types' => [
-        '1' => ['showitem' => 'title, type, instrumentation, data_acquisition_certain, related_persons_known, work_examined, data_set_manually_checked, contained_works_identified, responsible_person, date_of_publishing, final, language, id, comment, contained_works, editors, instruments, form, first_composer, published_subitems, publisher, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'title, type, instrumentation, data_acquisition_certain, related_persons_known, work_examined, data_set_manually_checked, contained_works_identified, responsible_person, date_of_publishing, final, language, id, comment, contained_works, editors, instruments, genre, first_composer, published_subitems, publisher, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -286,7 +286,7 @@ return [
         ],
         'contained_works' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.contained_works',
+            'label' => 'enthaltene Werke',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -362,7 +362,7 @@ return [
             ],
             
         ],
-        'form' => [
+        'genre' => [
             'exclude' => true,
             'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.form',
             'config' => [
