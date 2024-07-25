@@ -3,7 +3,7 @@
 namespace Slub\MpdbCore\Services;
 
 use Elastic\Elasticsearch\Client;
-use Illuminate\Support\Collection;
+use Slub\MpdbCore\Common\Collection;
 use Slub\MpdbCore\Domain\Model\Publisher;
 use Slub\MpdbCore\Common\ElasticClientBuilder;
 use Slub\MpdbCore\Command\IndexCommand;
@@ -102,11 +102,11 @@ class ElasticSearchService implements SearchServiceInterface
         switch ($this->method) {
             case 'search':
                 $result = $this->client->search($this->params);
-                return Collection::wrap($result['hits']['hits']);
+                return Collection::wrap($result['hits']['hits'])->recursive();
                 break;
             case 'get':
                 $result = $this->client->get($this->params);
-                return Collection::wrap($result['_source']);
+                return Collection::wrap($result['_source'])->recursive();
                 break;
         }
 

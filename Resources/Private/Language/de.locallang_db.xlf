@@ -5,12 +5,167 @@
 		<body>
 			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument" resname="tx_mpdbcore_domain_model_subiteminstrument">
 				<source>Instrument for published subitem</source>
+				<target>Instrument des Teilartikels</target>
 			</trans-unit>
 			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument.abbreviation" resname="tx_mpdbcore_domain_model_subiteminstrument.abbreviation">
 				<source>abbreviated name</source>
+				<target>abgekürzter Name</target>
 			</trans-unit>
 			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument.expansion" resname="tx_mpdbcore_domain_model_subiteminstrument.expansion">
 				<source>expanded name</source>
+				<target>erweiterter name</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.title" resname="tx_mpdbcore_domain_model_publisheditem.title" approved="yes">
+				<source>title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.piano_combination" resname="tx_mpdbcore_domain_model_publisheditem.piano_combination" approved="yes">
+				<source>piano combination</source>
+				<target>Klavierbearbeitung</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.type" resname="tx_mpdbcore_domain_model_publisheditem.type" approved="yes">
+				<source>type</source>
+				<target>Typ</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.instrumentation" resname="tx_mpdbcore_domain_model_publisheditem.instrumentation" approved="yes">
+				<source>medium of performance</source>
+				<target>Instrumentierung</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.data_acquisition_certain" resname="tx_mpdbcore_domain_model_publisheditem.data_acquisition_certain" approved="yes">
+				<source>data acquisition certain</source>
+				<target>Datenerfassung gesichert</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.related_presons_known" resname="tx_mpdbcore_domain_model_publisheditem.related_presons_known" approved="yes">
+				<source>relates persons known</source>
+				<target>Bezugspersonen bekannt</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.work_examined" resname="tx_mpdbcore_domain_model_publisheditem.work_examined" approved="yes">
+				<source>work examined</source>
+				<target>Werk eingesehen</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.data_set_manually_checked" resname="tx_mpdbcore_domain_model_publisheditem.data_set_manually_checked" approved="yes">
+				<source>data set manually checked</source>
+				<target>Datensatz manuell geprüft</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.contained_works_identified" resname="tx_mpdbcore_domain_model_publisheditem.contained_works_identified" approved="yes">
+				<source>contained works identified</source>
+				<target>enthaltene Werke identifiziert</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.responsible_person" resname="tx_mpdbcore_domain_model_publisheditem.responsible_person" approved="yes">
+				<source>responsible person</source>
+				<target>verantwortliche Person</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.date_of_publishing" resname="tx_mpdbcore_domain_model_publisheditem.date_of_publishing" approved="yes">
+				<source>date of publishing</source>
+				<target>Publikationsdatum</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.final" resname="tx_mpdbcore_domain_model_publisheditem.final" approved="yes">
+				<source>published</source>
+				<target>öffentlich</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.language" resname="tx_mpdbcore_domain_model_publisheditem.language" approved="yes">
+				<source>language</source>
+				<target>Sprache</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.plate_ids" resname="tx_mpdbcore_domain_model_publisheditem.plate_ids" approved="yes">
+				<source>plate ids</source>
+				<target>Plattennummern</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.mvdb_id" resname="tx_mpdbcore_domain_model_publisheditem.mvdb_id" approved="yes">
+				<source>mvdb id</source>
+				<target>MVDB-ID</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.comment" resname="tx_mpdbcore_domain_model_publisheditem.comment" approved="yes">
+				<source>comment</source>
+				<target>Kommentar</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.contained_works" resname="tx_mpdbcore_domain_model_publisheditem.contained_works" approved="yes">
+				<source>contained works</source>
+				<target>enthaltene Werke</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.editors" resname="tx_mpdbcore_domain_model_publisheditem.editors" approved="yes">
+				<source>editors</source>
+				<target>Herausgeber</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.instruments" resname="tx_mpdbcore_domain_model_publisheditem.instruments" approved="yes">
+				<source>instruments</source>
+				<target>Instrumente</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.genre" resname="tx_mpdbcore_domain_model_publisheditem.genre" approved="yes">
+				<source>genres</source>
+				<target>Genres</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.first_composer" resname="tx_mpdbcore_domain_model_publisheditem.first_composer" approved="yes">
+				<source>first composer</source>
+				<target>erster Komponist</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.published_subitems" resname="tx_mpdbcore_domain_model_publisheditem.published_subitems" approved="yes">
+				<source>published subitems</source>
+				<target>Teilartikel</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.publisher" resname="tx_mpdbcore_domain_model_publisheditem.publisher" approved="yes">
+				<source>publisher</source>
+				<target>Verlag</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.plate_id" resname="tx_mpdbcore_domain_model_publishedsubitem.plate_id" approved="yes">
+				<source>plate id</source>
+				<target>Plattennummer</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.part" resname="tx_mpdbcore_domain_model_publishedsubitem.part" approved="yes">
+				<source>part</source>
+				<target>Teil</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.voice" resname="tx_mpdbcore_domain_model_publishedsubitem.voice" approved="yes">
+				<source>voice</source>
+				<target>Stimme</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.price" resname="tx_mpdbcore_domain_model_publishedsubitem.price" approved="yes">
+				<source>price</source>
+				<target>Preis</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.comment" resname="tx_mpdbcore_domain_model_publishedsubitem.comment" approved="yes">
+				<source>comment</source>
+				<target>Kommentar</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.is_piano_reduction" resname="tx_mpdbcore_domain_model_publishedsubitem.is_piano_reduction" approved="yes">
+				<source>is piano reduction</source>
+				<target>ist Klavierauszug</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.mvdb_id" resname="tx_mpdbcore_domain_model_publishedsubitem.mvdb_id" approved="yes">
+				<source>mvdb id</source>
+				<target>MVDB-ID</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.date_of_publishing" resname="tx_mpdbcore_domain_model_publishedsubitem.date_of_publishing" approved="yes">
+				<source>date of publishing</source>
+				<target>Publikationsdatum</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.has_negative_store" resname="tx_mpdbcore_domain_model_publishedsubitem.has_negative_store" approved="yes">
+				<source>has negative store</source>
+				<target>hat negativen Lagerbestand</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.approve_negative_store" resname="tx_mpdbcore_domain_model_publishedsubitem.approve_negative_store" approved="yes">
+				<source>approve negative store</source>
+				<target>negativen Lagerbestand bestätigen</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.start_store" resname="tx_mpdbcore_domain_model_publishedsubitem.start_store" approved="yes">
+				<source>start store</source>
+				<target>Anfangsbestand</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.db_identifier" resname="tx_mpdbcore_domain_model_publishedsubitem.db_identifier" approved="yes">
+				<source>db identifier</source>
+				<target>Datenbank-ID</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.contained_works" resname="tx_mpdbcore_domain_model_publishedsubitem.contained_works" approved="yes">
+				<source>contained works</source>
+				<target>enthaltene Werke</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.publisher_actions" resname="tx_mpdbcore_domain_model_publishedsubitem.publisher_actions" approved="yes">
+				<source>publisher actions</source>
+				<target>Verlagsaktionen</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.published_item" resname="tx_mpdbcore_domain_model_publishedsubitem.published_item" approved="yes">
+				<source>published item</source>
+				<target>Verlagsartikel</target>
 			</trans-unit>
         </body>
     </file>

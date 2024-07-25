@@ -56,7 +56,7 @@ CREATE TABLE tx_mpdbcore_domain_model_publisheditem (
 	instruments int(11) unsigned DEFAULT '0' NOT NULL,
 	genre int(11) unsigned DEFAULT '0' NOT NULL,
 	first_composer int(11) unsigned DEFAULT '0' NOT NULL,
-	publisher_mikro_items int(11) unsigned DEFAULT '0' NOT NULL,
+	published_subitems int(11) unsigned DEFAULT '0' NOT NULL,
 	publisher int(11) unsigned DEFAULT '0'
 
 );

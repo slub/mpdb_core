@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:publisher_db/Resources/Private/Language/locallang_csh" date="2022-12-19T13:20:31Z" product-name="publisher_db">
+		<header/>
+		<body>
+			<trans-unit id="date_of_action.description" resname="date_of_action.description">
+				<source>dateOfAction</source>
+			</trans-unit>
+			<trans-unit id="quantity.description" resname="quantity.description">
+				<source>quantity</source>
+			</trans-unit>
+			<trans-unit id="type.description" resname="type.description">
+				<source>type</source>
+			</trans-unit>
+			<trans-unit id="certain.description" resname="certain.description">
+				<source>certain</source>
+			</trans-unit>
+			<trans-unit id="inferred.description" resname="inferred.description">
+				<source>inferred</source>
+			</trans-unit>
+			<trans-unit id="in_store.description" resname="in_store.description">
+				<source>inStore</source>
+			</trans-unit>
+			<trans-unit id="publisher_mikro_item.description" resname="publisher_mikro_item.description">
+				<source>publisherMikroItem</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

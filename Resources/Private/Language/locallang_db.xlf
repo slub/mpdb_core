@@ -5,15 +5,126 @@
 		<body>
 			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument" resname="tx_mpdbcore_domain_model_subiteminstrument" approved="yes">
 				<source>Instrument for published subitem</source>
-				<target>Instrument für Teilartikel</target>
 			</trans-unit>
 			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument.abbreviation" resname="tx_mpdbcore_domain_model_subiteminstrument.abbreviation" approved="yes">
 				<source>abbreviated name</source>
-				<target>abgekürzte Bezeichnung</target>
 			</trans-unit>
 			<trans-unit id="tx_mpdbcore_domain_model_subiteminstrument.expansion" resname="tx_mpdbcore_domain_model_subiteminstrument.expansion" approved="yes">
 				<source>expanded name</source>
-				<target>expandierte Bezeichnung</target>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.title" resname="tx_mpdbcore_domain_model_publisheditem.title" approved="yes">
+				<source>title</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.piano_combination" resname="tx_mpdbcore_domain_model_publisheditem.piano_combination" approved="yes">
+				<source>piano combination</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.type" resname="tx_mpdbcore_domain_model_publisheditem.type" approved="yes">
+				<source>type</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.instrumentation" resname="tx_mpdbcore_domain_model_publisheditem.instrumentation" approved="yes">
+				<source>medium of performance</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.data_acquisition_certain" resname="tx_mpdbcore_domain_model_publisheditem.data_acquisition_certain" approved="yes">
+				<source>data acquisition certain</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.related_presons_known" resname="tx_mpdbcore_domain_model_publisheditem.related_presons_known" approved="yes">
+				<source>relates persons known</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.work_examined" resname="tx_mpdbcore_domain_model_publisheditem.work_examined" approved="yes">
+				<source>work examined</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.data_set_manually_checked" resname="tx_mpdbcore_domain_model_publisheditem.data_set_manually_checked" approved="yes">
+				<source>data set manually checked</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.contained_works_identified" resname="tx_mpdbcore_domain_model_publisheditem.contained_works_identified" approved="yes">
+				<source>contained works identified</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.responsible_person" resname="tx_mpdbcore_domain_model_publisheditem.responsible_person" approved="yes">
+				<source>responsible person</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.date_of_publishing" resname="tx_mpdbcore_domain_model_publisheditem.date_of_publishing" approved="yes">
+				<source>date of publishing</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.final" resname="tx_mpdbcore_domain_model_publisheditem.final" approved="yes">
+				<source>published</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.language" resname="tx_mpdbcore_domain_model_publisheditem.language" approved="yes">
+				<source>language</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.plate_ids" resname="tx_mpdbcore_domain_model_publisheditem.plate_ids" approved="yes">
+				<source>plate ids</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.mvdb_id" resname="tx_mpdbcore_domain_model_publisheditem.mvdb_id" approved="yes">
+				<source>mvdb id</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.comment" resname="tx_mpdbcore_domain_model_publisheditem.comment" approved="yes">
+				<source>comment</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.contained_works" resname="tx_mpdbcore_domain_model_publisheditem.contained_works" approved="yes">
+				<source>contained works</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.editors" resname="tx_mpdbcore_domain_model_publisheditem.editors" approved="yes">
+				<source>editors</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.instruments" resname="tx_mpdbcore_domain_model_publisheditem.instruments" approved="yes">
+				<source>instruments</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.genre" resname="tx_mpdbcore_domain_model_publisheditem.genre" approved="yes">
+				<source>genre</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.first_composer" resname="tx_mpdbcore_domain_model_publisheditem.first_composer" approved="yes">
+				<source>first composer</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.published_subitems" resname="tx_mpdbcore_domain_model_publisheditem.published_subitems" approved="yes">
+				<source>published subitems</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.publisher" resname="tx_mpdbcore_domain_model_publisheditem.publisher" approved="yes">
+				<source>publisher</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.plate_id" resname="tx_mpdbcore_domain_model_publishedsubitem.plate_id" approved="yes">
+				<source>plate id</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.part" resname="tx_mpdbcore_domain_model_publishedsubitem.part" approved="yes">
+				<source>part</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.voice" resname="tx_mpdbcore_domain_model_publishedsubitem.voice" approved="yes">
+				<source>voice</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.price" resname="tx_mpdbcore_domain_model_publishedsubitem.price" approved="yes">
+				<source>price</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.comment" resname="tx_mpdbcore_domain_model_publishedsubitem.comment" approved="yes">
+				<source>comment</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.is_piano_reduction" resname="tx_mpdbcore_domain_model_publishedsubitem.is_piano_reduction" approved="yes">
+				<source>is piano reduction</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.mvdb_id" resname="tx_mpdbcore_domain_model_publishedsubitem.mvdb_id" approved="yes">
+				<source>mvdb id</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.date_of_publishing" resname="tx_mpdbcore_domain_model_publishedsubitem.date_of_publishing" approved="yes">
+				<source>date of publishing</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.has_negative_store" resname="tx_mpdbcore_domain_model_publishedsubitem.has_negative_store" approved="yes">
+				<source>has negative store</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.approve_negative_store" resname="tx_mpdbcore_domain_model_publishedsubitem.approve_negative_store" approved="yes">
+				<source>approve negative store</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.start_store" resname="tx_mpdbcore_domain_model_publishedsubitem.start_store" approved="yes">
+				<source>start store</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.db_identifier" resname="tx_mpdbcore_domain_model_publishedsubitem.db_identifier" approved="yes">
+				<source>db identifier</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.contained_works" resname="tx_mpdbcore_domain_model_publishedsubitem.contained_works" approved="yes">
+				<source>contained works</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.publisher_actions" resname="tx_mpdbcore_domain_model_publishedsubitem.publisher_actions" approved="yes">
+				<source>publisher actions</source>
+			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publishedsubitem.published_item" resname="tx_mpdbcore_domain_model_publishedsubitem.published_item" approved="yes">
+				<source>published item</source>
 			</trans-unit>
         </body>
     </file>
