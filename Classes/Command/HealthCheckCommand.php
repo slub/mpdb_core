@@ -12,6 +12,7 @@ use Slub\MpdbCore\Common\ElasticClientBuilder;
 use Slub\MpdbCore\Domain\Repository\PublishedItemRepository;
 use Slub\MpdbCore\Lib\DbArray;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -74,7 +75,7 @@ class HealthCheckCommand extends Command
             2);
         $checks = $helper->ask($input, $output, $question);
 
-        $this->initializeRepositories();
+        $this->initializeRepositories($input);
         if ($checks == self::choiceCheckMvdbIds || $checks == self::choiceAll)
             $this->checkMvdbIds();
         if ($checks == self::choiceSetWorkTitles || $checks == self::choiceAll)
@@ -116,6 +117,8 @@ class HealthCheckCommand extends Command
     protected function configure(): void
     {
         $this->setHelp('Check Database Consistency');
+
+        $this->addArgument('storagePid', InputArgument::REQUIRED, 'Storage pid to retrieve works from.');
     }
 
     protected function setFinal(): void
@@ -333,11 +336,11 @@ class HealthCheckCommand extends Command
      *
      * @return void
      */
-    protected function initializeRepositories(): void
+    protected function initializeRepositories(InputInterface $input): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $frameworkConfiguration['persistence']['storagePid'] = 0;
+        $frameworkConfiguration['persistence']['storagePid'] = $input->getArgument('storagePid');
         $configurationManager->setConfiguration($frameworkConfiguration);
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->workRepository = $objectManager->get(GndWorkRepository::class);

@@ -13,6 +13,7 @@ use Slub\DmNorm\Domain\Repository\GndWorkRepository;
 use Slub\MpdbCore\Lib\DbArray;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -71,7 +72,7 @@ class CompleteGndWorksCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output) {
         $this->io = new SymfonyStyle($input, $output);
         $this->io->title($this->getDescription());
-        $this->initializeRepositories();
+        $this->initializeRepositories($input);
     }
 
     /**
@@ -110,6 +111,8 @@ class CompleteGndWorksCommand extends Command
     {
         $this->setHelp('Fetch GND data for new works (works without title).');
         $this->setDescription('Fetching GND data for new works (works without title).');
+
+        $this->addArgument('storagePid', InputArgument::REQUIRED, 'Storage pid to retrieve works from.');
     }
 
     /**
@@ -121,11 +124,11 @@ class CompleteGndWorksCommand extends Command
      *
      * @return void
      */
-    protected function initializeRepositories(): void
+    protected function initializeRepositories(InputInterface $input): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $frameworkConfiguration['persistence']['storagePid'] = 0;
+        $frameworkConfiguration['persistence']['storagePid'] = $input->getArgument('storagePid');
         $configurationManager->setConfiguration($frameworkConfiguration);
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->workRepository = $objectManager->get(GndWorkRepository::class);
