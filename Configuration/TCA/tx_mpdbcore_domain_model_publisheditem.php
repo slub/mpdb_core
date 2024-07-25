@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem',
+        'title' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -118,7 +118,7 @@ return [
         ],
         'title' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.title',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -127,7 +127,7 @@ return [
         ],
         'piano_combination' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.piano_combination',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.piano_combination',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -136,7 +136,7 @@ return [
         ],
         'type' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.type',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.type',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -145,7 +145,7 @@ return [
         ],
         'instrumentation' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.instrumentation',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.instrumentation',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -154,7 +154,7 @@ return [
         ],
         'data_acquisition_certain' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.data_acquisition_certain',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.data_acquisition_certain',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -167,7 +167,7 @@ return [
         ],
         'related_persons_known' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.related_persons_known',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.related_persons_known',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -180,7 +180,7 @@ return [
         ],
         'work_examined' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.work_examined',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.work_examined',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -193,7 +193,7 @@ return [
         ],
         'data_set_manually_checked' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.data_set_manually_checked',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.data_set_manually_checked',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -206,7 +206,7 @@ return [
         ],
         'contained_works_identified' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.contained_works_identified',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.contained_works_identified',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -219,7 +219,7 @@ return [
         ],
         'responsible_person' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.responsible_person',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.responsible_person',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -228,7 +228,7 @@ return [
         ],
         'date_of_publishing' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.date_of_publishing',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.date_of_publishing',
             'config' => [
                 'dbType' => 'date',
                 'type' => 'input',
@@ -240,7 +240,7 @@ return [
         ],
         'final' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.final',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.final',
             'config' => [
                 'type' => 'input',
                 'size' => 4,
@@ -249,7 +249,7 @@ return [
         ],
         'language' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.language',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.language',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -258,7 +258,7 @@ return [
         ],
         'plate_ids' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.plate_ids',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.plate_ids',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -267,7 +267,7 @@ return [
         ],
         'mvdb_id' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.mvdb_id',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.mvdb_id',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -276,7 +276,7 @@ return [
         ],
         'comment' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.comment',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.comment',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
@@ -312,7 +312,7 @@ return [
         ],
         'editors' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.editors',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.editors',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -338,7 +338,7 @@ return [
         ],
         'instruments' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.instruments',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.instruments',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -364,7 +364,7 @@ return [
         ],
         'genre' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.form',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.form',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -390,7 +390,7 @@ return [
         ],
         'first_composer' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.first_composer',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.first_composer',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -415,7 +415,7 @@ return [
         ],
         'published_subitems' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.published_subitems',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.published_subitems',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_mpdbcore_domain_model_publishedsubitem',
@@ -434,7 +434,7 @@ return [
         ],
         'publisher' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publishermakroitem.publisher',
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.publisher',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
