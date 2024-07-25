@@ -74,3 +74,4 @@ ALTER TABLE tx_dmnorm_domain_model_gndgenre CHANGE `super_form` `super_gnd_genre
 ALTER TABLE tx_mpdbcore_domain_model_publisheraction CHANGE `publishermikroitem` `publishedsubitem` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE tx_mpdbcore_domain_model_publisher ADD public SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE tx_mpdbcore_domain_model_publisheditem CHANGE published_subitems publishedsubitems INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE tx_dmnorm_domain_model_gndwork CHANGE main_instrumentation medium_of_performance INT(11) UNSIGNED NOT NULL DEFAULT '0';
