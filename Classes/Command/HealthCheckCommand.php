@@ -4,23 +4,24 @@
  *
  */
 
-namespace SLUB\MpdbCore\Command;
+namespace Slub\MpdbCore\Command;
 
+use Slub\DmNorm\Domain\Repository\GndPersonRepository;
+use Slub\DmNorm\Domain\Repository\GndWorkRepository;
+use Slub\MpdbCore\Common\ElasticClientBuilder;
+use Slub\MpdbCore\Domain\Repository\PublishedItemRepository;
+use Slub\MpdbCore\Lib\DbArray;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use SLUB\MpdbCore\Lib\DbArray;
-use SLUB\MpdbCore\Common\ElasticClientBuilder;
-use SLUB\MpdbCore\Domain\Repository\PublishedItemRepository;
-use SLUB\MpdbCore\Domain\Repository\PersonRepository;
-use SLUB\MpdbCore\Domain\Repository\WorkRepository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  * HealthCheck Command class
@@ -40,7 +41,16 @@ class HealthCheckCommand extends Command
     const choiceRemovePersonDoubles = 'Remove double persons';
     const choiceAll = 'Perform all checks';
 
-    protected function initialize(InputInterface $input, OutputInterface $output) {
+    protected ?PublishedItemRepository $publishedItemRepository = null;
+
+    protected ?GndPersonRepository $personRepository = null;
+
+    protected ?GndWorkRepository $workRepository = null;
+
+    protected ?SymfonyStyle $io = null;
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
         $this->io = new SymfonyStyle($input, $output);
         $this->io->title($this->getDescription());
     }
@@ -48,9 +58,9 @@ class HealthCheckCommand extends Command
     /**
      * Executes the command to build indices from Database
      *
-     * @return void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
         $question = new ChoiceQuestion(
@@ -65,7 +75,7 @@ class HealthCheckCommand extends Command
             2);
         $checks = $helper->ask($input, $output, $question);
 
-        $this->initializeRepositories();
+        $this->initializeRepositories($input);
         if ($checks == self::choiceCheckMvdbIds || $checks == self::choiceAll)
             $this->checkMvdbIds();
         if ($checks == self::choiceSetWorkTitles || $checks == self::choiceAll)
@@ -79,7 +89,7 @@ class HealthCheckCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function checkMvdbIds()
+    protected function checkMvdbIds(): void
     {
         $this->io->section('Checking all MVDB IDs');
         $publishedItems = $this->publishedItemRepository->findAll();
@@ -102,18 +112,20 @@ class HealthCheckCommand extends Command
     /**
      * Pre-Execution configuration
      *
-     * @return array
+     * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setHelp('Check Database Consistency');
+
+        $this->addArgument('storagePid', InputArgument::REQUIRED, 'Storage pid to retrieve works from.');
     }
 
-    protected function setFinal()
+    protected function setFinal(): void
     {
     }
 
-    protected function setWorkTitles()
+    protected function setWorkTitles(): void
     {
         $this->io->section('Checking all work titles');
         $works = $this->workRepository->findAll();
@@ -123,7 +135,7 @@ class HealthCheckCommand extends Command
             $this->io->progressAdvance();
             $oldTitle = $work->getFullTitle();
             $work->setFullTitle();
-            $work->setPublishers();
+            //$work->setPublishers();
             $newTitle = $work->getFullTitle();
             if ($newTitle != $oldTitle) {
                 $this->io->text('Changing ' . $oldTitle . ' to ' . $newTitle . ' in ' . $work->getGndId() . '.');
@@ -134,11 +146,11 @@ class HealthCheckCommand extends Command
         $this->io->progressFinish();
     }
 
-    protected function setInstrumentationNames()
+    protected function setInstrumentationNames(): void
     {
     }
 
-    protected function removeDoubleWorks()
+    protected function removeDoubleWorks(): void
     {
         $this->io->section('Removing double works');
         $publishedItems = $this->publishedItemRepository->findAll();
@@ -175,7 +187,7 @@ class HealthCheckCommand extends Command
         $this->removeUnusedWorks();
     }
 
-    protected function removeDoublePersons()
+    protected function removeDoublePersons(): void
     {
         $this->io->section('Removing double persons');
         $works = $this->workRepository->findAll();
@@ -238,11 +250,11 @@ class HealthCheckCommand extends Command
         $this->removeUnusedPersons();
     }
 
-    protected function removeDoublePlaces()
+    protected function removeDoublePlaces(): void
     {
     }
 
-    protected function removeUnusedWorks()
+    protected function removeUnusedWorks(): void
     {
         $this->io->section('Removing unused works');
         $publishedItems = $this->publishedItemRepository->findAll();
@@ -267,7 +279,7 @@ class HealthCheckCommand extends Command
         $this->io->progressFinish();
     }
 
-    protected function removeUnusedPersons()
+    protected function removeUnusedPersons(): void
     {
         $this->io->section('Removing unused persons');
         $works = $this->workRepository->findAll();
@@ -311,7 +323,7 @@ class HealthCheckCommand extends Command
         $this->io->progressFinish();
     }
 
-    protected function removeUnusedPlaces()
+    protected function removeUnusedPlaces(): void
     {
     }
 
@@ -322,17 +334,17 @@ class HealthCheckCommand extends Command
      *
      * @param int $storagePid The storage pid
      *
-     * @return bool
+     * @return void
      */
-    protected function initializeRepositories()
+    protected function initializeRepositories(InputInterface $input): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $frameworkConfiguration['persistence']['storagePid'] = 0;
+        $frameworkConfiguration['persistence']['storagePid'] = $input->getArgument('storagePid');
         $configurationManager->setConfiguration($frameworkConfiguration);
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->workRepository = $objectManager->get(WorkRepository::class);
-        $this->publishedItemRepository = $objectManager->get(publishedItemRepository::class);
-        $this->personRepository = $objectManager->get(PersonRepository::class);
+        $this->workRepository = $objectManager->get(GndWorkRepository::class);
+        $this->publishedItemRepository = $objectManager->get(PublishedItemRepository::class);
+        $this->personRepository = $objectManager->get(GndPersonRepository::class);
     }
 }

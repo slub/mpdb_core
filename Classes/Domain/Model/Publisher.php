@@ -62,11 +62,11 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $activeTo = null;
 
     /**
-     * publisherMakroItems
+     * publishedItems
      * 
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherMakroItem>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdbCore\Domain\Model\PublishedItem>
      */
-    protected $publisherMakroItems = null;
+    protected $publishedItems = null;
 
     /**
      * __construct
@@ -88,8 +88,7 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->responsiblePersons = new ObjectStorage();
-        $this->publisherMikroItems = new ObjectStorage();
+        $this->publishedItems = new ObjectStorage();
     }
 
     /**
@@ -221,23 +220,23 @@ class Publisher extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the publisherMakroItems
      * 
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
      */
-    public function getPublisherMakroItems()
+    public function getPublishedItems()
     {
-        return $this->publisherMakroItems;
+        return $this->publishedItems;
     }
 
     /**
      * Sets the publisherMakroItems
      * 
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\PublisherDb\Domain\Model\PublisherMakroItem> $publisherMakroItems
      * @return void
      */
     public function setPublisherMakroItems(ObjectStorage $publisherMakroItems = null)
     {
         $publisherMakroItems = $publisherMakroItems ?? new ObjectStorage();
-        $this->publisherMakroItems = $publisherMakroItems;
+        $this->publishedItems = $publisherMakroItems;
     }
 
 }

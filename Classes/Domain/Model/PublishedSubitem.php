@@ -1,7 +1,9 @@
 <?php
 namespace Slub\MpdbCore\Domain\Model;
 
-use \TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Illuminate\Support\Collection;
+use Slub\DmNorm\Domain\Model\GndWork;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /***
  *
@@ -109,14 +111,14 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * containedWorks
      * 
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\Work>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmNorm\Domain\Model\GndWork>
      */
     protected $containedWorks = null;
 
     /**
      * publisherActions
      * 
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherAction>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdbCore\Domain\Model\PublisherAction>
      */
     protected $publisherActions = null;
 
@@ -282,10 +284,10 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a PublisherAction
      * 
-     * @param \SLUB\PublisherDb\Domain\Model\PublisherAction $publisherAction
+     * @param \Slub\MpdbCore\Domain\Model\PublisherAction $publisherAction
      * @return void
      */
-    public function addPublisherAction(\SLUB\PublisherDb\Domain\Model\PublisherAction $publisherAction = null)
+    public function addPublisherAction(PublisherAction $publisherAction = null)
     {
         if ($publisherAction != null) {
             $this->publisherActions->attach($publisherAction);
@@ -295,10 +297,10 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a PublisherAction
      * 
-     * @param \SLUB\PublisherDb\Domain\Model\PublisherAction $publisherActionToRemove The PublisherAction to be removed
+     * @param \Slub\MpdbCore\Domain\Model\PublisherAction $publisherActionToRemove The PublisherAction to be removed
      * @return void
      */
-    public function removePublisherAction(\SLUB\PublisherDb\Domain\Model\PublisherAction $publisherActionToRemove)
+    public function removePublisherAction(PublisherAction $publisherActionToRemove)
     {
         $this->publisherActions->detach($publisherActionToRemove);
     }
@@ -306,7 +308,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the publisherActions
      * 
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherAction> publisherActions
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdCore\Domain\Model\PublisherAction> publisherActions
      */
     public function getPublisherActions()
     {
@@ -316,7 +318,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the publisherActions
      * 
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\PublisherAction> $publisherActions
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\MpdCore\Domain\Model\PublisherAction> $publisherActions
      * @return void
      */
     public function setPublisherActions(ObjectStorage $publisherActions = null)
@@ -328,10 +330,10 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a Work
      * 
-     * @param \SLUB\PublisherDb\Domain\Model\Work $containedWork
+     * @param \Slub\DmNorm\Domain\Model\GndWork $containedWork
      * @return void
      */
-    public function addContainedWork(\SLUB\PublisherDb\Domain\Model\Work $containedWork = null)
+    public function addContainedWork(GndWork $containedWork = null)
     {
         if ($containedWork != null) {
             $this->containedWorks->attach($containedWork);
@@ -341,10 +343,10 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a Work
      * 
-     * @param \SLUB\PublisherDb\Domain\Model\Work $containedWorkToRemove The Work to be removed
+     * @param \Slub\DmOnt\Domain\Model\GndWork $containedWorkToRemove The Work to be removed
      * @return void
      */
-    public function removeContainedWork(\SLUB\PublisherDb\Domain\Model\Work $containedWorkToRemove)
+    public function removeContainedWork(GndWork $containedWorkToRemove)
     {
         $this->containedWorks->detach($containedWorkToRemove);
     }
@@ -352,7 +354,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the containedWorks
      * 
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\Work> containedWorks
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\GndWork> containedWorks
      */
     public function getContainedWorks()
     {
@@ -362,7 +364,7 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the containedWorks
      * 
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SLUB\PublisherDb\Domain\Model\Work> $containedWorks
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Slub\DmOnt\Domain\Model\GndWork> $containedWorks
      * @return void
      */
     public function setContainedWorks(ObjectStorage $containedWorks = null)
@@ -590,15 +592,16 @@ class PublishedSubitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getComposers()
     {
-        return (new \SLUB\PublisherDb\Lib\DbArray())->set($this->getContainedWorks()->toArray())->map(
-        function ($work) {
-            return $work->getFirstComposer() ? $work->getFirstComposer()->getName() : '';
-        }
-        )->filter(
-        function ($name) {
-            return $name != '';
-        }
-        )->unique()->implode(', ');
+        return Collection::wrap($this->containedWorks)->
+            map( function($work) { return self::getWorkComposerName($work); } )->
+            filter( function($name) { return $name != ''; } )->
+            unique()->
+            implode(', ');
+    }
+
+    protected static function getWorkComposerName(GndWork $work): string
+    {
+        return $work->getFirstComposer()->getName();
     }
 
     /**

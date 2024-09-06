@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:publisher_db/Resources/Private/Language/locallang" date="2022-12-19T13:20:31Z" product-name="publisher_db">
+		<header/>
+		<body>
+            <trans-unit id="type.work">
+                <source>single work print</source>
+                <target>Einzelwerk</target>
+            </trans-unit>
+            <trans-unit id="type.collectionFull">
+                <source>explored collection</source>
+                <target>erschlossene Sammlung</target>
+            </trans-unit>
+            <trans-unit id="type.collectionPart">
+                <source>partially explored collection</source>
+                <target>teilerschlossene Sammlung</target>
+            </trans-unit>
+            <trans-unit id="type.collectionBlackbox">
+                <source>unexplored collection</source>
+                <target>unerschlossene Sammlung</target>
+            </trans-unit>
+            <trans-unit id="type.adaptation">
+                <source>version</source>
+                <target>Bearbeitung oder Version</target>
+            </trans-unit>
+            <trans-unit id="type.educational">
+                <source>educational work</source>
+                <target>Schulwerk</target>
+            </trans-unit>
+            <trans-unit id="type.theoretic">
+                <source>theoretical work</source>
+                <target>theoretisches Werk</target>
+            </trans-unit>
+            <trans-unit id="type.theoretic">
+                <source>theoretical work</source>
+                <target>theoretisches Werk</target>
+            </trans-unit>
+            <trans-unit id="editor">
+                <source>editor</source>
+                <target>Bearbeiter</target>
+            </trans-unit>
+		</body>
+	</file>
+</xliff>

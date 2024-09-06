@@ -11,7 +11,7 @@ CREATE TABLE tx_mpdbcore_domain_model_subiteminstrument (
 #
 CREATE TABLE tx_mpdbcore_domain_model_publishedsubitem (
 
-	publisher_makro_item int(11) unsigned DEFAULT '0' NOT NULL,
+	publisheditem int(11) unsigned DEFAULT '0' NOT NULL,
 	plate_id varchar(255) DEFAULT '' NOT NULL,
 	part varchar(255) DEFAULT '' NOT NULL,
 	voice varchar(255) DEFAULT '' NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE tx_mpdbcore_domain_model_publisheditem (
 	instruments int(11) unsigned DEFAULT '0' NOT NULL,
 	genre int(11) unsigned DEFAULT '0' NOT NULL,
 	first_composer int(11) unsigned DEFAULT '0' NOT NULL,
-	publisher_mikro_items int(11) unsigned DEFAULT '0' NOT NULL,
+	published_subitems int(11) unsigned DEFAULT '0' NOT NULL,
 	publisher int(11) unsigned DEFAULT '0'
 
 );
@@ -88,7 +88,6 @@ CREATE TABLE tx_mpdbcore_domain_model_publisher (
 	alternate_name varchar(255) DEFAULT '' NOT NULL,
 	active_from date DEFAULT NULL,
 	active_to date DEFAULT NULL,
-	responsible_persons int(11) unsigned DEFAULT '0' NOT NULL,
 	public smallint(5) unsigned DEFAULT '0' NOT NULL
 
 );

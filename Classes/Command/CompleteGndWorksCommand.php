@@ -4,25 +4,26 @@
  *
  */
 
-namespace SLUB\MpdbCore\Command;
+namespace Slub\MpdbCore\Command;
 
+use Slub\DmNorm\Domain\Repository\GndInstrumentRepository;
+use Slub\DmNorm\Domain\Repository\GndGenreRepository;
+use Slub\DmNorm\Domain\Repository\GndPersonRepository;
+use Slub\DmNorm\Domain\Repository\GndWorkRepository;
+use Slub\MpdbCore\Lib\DbArray;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Core\Core\Bootstrap;
-use SLUB\DMNorm\Domain\Repository\InstrumentRepository;
-use SLUB\DMNorm\Domain\Repository\FormRepository;
-use SLUB\MpdbCore\Lib\DbArray;
-use SLUB\MpdbCore\Domain\Repository\PersonRepository;
-use SLUB\MpdbCore\Domain\Repository\WorkRepository;
-use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  * CompleteGndWorks Command class
@@ -57,6 +58,10 @@ class CompleteGndWorksCommand extends Command
      */
     protected $instrumentRepository = null;
 
+    protected ?SymfonyStyle $io = null;
+
+    protected array $extConf = [];
+
     /**
      * formRepository
      * 
@@ -67,7 +72,7 @@ class CompleteGndWorksCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output) {
         $this->io = new SymfonyStyle($input, $output);
         $this->io->title($this->getDescription());
-        $this->initializeRepositories();
+        $this->initializeRepositories($input);
     }
 
     /**
@@ -75,19 +80,8 @@ class CompleteGndWorksCommand extends Command
      *
      * @return void
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /*
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-        $tmpConfiguration = $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
-            'publisherDb'
-        );
-        $configurationManager->setConfiguration($tmpConfiguration);
-        $om = GeneralUtility::makeInstance(ObjectManager::class);
-        $workRepository = $om->get(WorkRepository::class);
-         */
-
         $countWorks = $this->workRepository->findAll()->count();
         $nonTitleWorks = $this->workRepository->findByTitle('');
         $countNonTitleWorks = $nonTitleWorks->count();
@@ -100,7 +94,7 @@ class CompleteGndWorksCommand extends Command
             $text = ++$count . '/' . $workCount;
             $text .= ' Fetching ' . $work->getGndId();
             $this->io->text($text);
-            $work->getGndInfo(
+            $work->pullGndInfo(
                 $this->workRepository,
                 $this->personRepository,
                 $this->instrumentRepository, 
@@ -113,10 +107,12 @@ class CompleteGndWorksCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setHelp('Fetch GND data for new works (works without title).');
         $this->setDescription('Fetching GND data for new works (works without title).');
+
+        $this->addArgument('storagePid', InputArgument::REQUIRED, 'Storage pid to retrieve works from.');
     }
 
     /**
@@ -126,19 +122,19 @@ class CompleteGndWorksCommand extends Command
      *
      * @param int $storagePid The storage pid
      *
-     * @return bool
+     * @return void
      */
-    protected function initializeRepositories()
+    protected function initializeRepositories(InputInterface $input): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $frameworkConfiguration['persistence']['storagePid'] = 0;
+        $frameworkConfiguration['persistence']['storagePid'] = $input->getArgument('storagePid');
         $configurationManager->setConfiguration($frameworkConfiguration);
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->workRepository = $objectManager->get(WorkRepository::class);
-        $this->personRepository = $objectManager->get(PersonRepository::class);
-        $this->instrumentRepository = $objectManager->get(InstrumentRepository::class);
-        $this->formRepository = $objectManager->get(FormRepository::class);
+        $this->workRepository = $objectManager->get(GndWorkRepository::class);
+        $this->personRepository = $objectManager->get(GndPersonRepository::class);
+        $this->instrumentRepository = $objectManager->get(GndInstrumentRepository::class);
+        $this->formRepository = $objectManager->get(GndGenreRepository::class);
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('mpdb_core');
     }
 

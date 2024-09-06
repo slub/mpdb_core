@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:publisher_db/Resources/Private/Language/locallang" date="2022-12-19T13:20:31Z" product-name="publisher_db">
+		<header/>
+		<body>
+            <trans-unit id="type.work">
+                <source>single work print</source>
+            </trans-unit>
+            <trans-unit id="type.collectionFull">
+                <source>explored collection</source>
+            </trans-unit>
+            <trans-unit id="type.collectionPart">
+                <source>partially explored collection</source>
+            </trans-unit>
+            <trans-unit id="type.collectionBlackbox">
+                <source>unexplored collection</source>
+            </trans-unit>
+            <trans-unit id="type.adaptation">
+                <source>version</source>
+            </trans-unit>
+            <trans-unit id="type.educational">
+                <source>educational work</source>
+            </trans-unit>
+            <trans-unit id="type.theoretic">
+                <source>theoretical work</source>
+            </trans-unit>
+            <trans-unit id="type.theoretic">
+                <source>theoretical work</source>
+            </trans-unit>
+            <trans-unit id="editor">
+                <source>editor</source>
+            </trans-unit>
+		</body>
+	</file>
+</xliff>
