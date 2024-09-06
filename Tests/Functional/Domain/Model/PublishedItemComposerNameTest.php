@@ -135,6 +135,7 @@ class PublishedItemComposerNameTest extends FunctionalTestCase
             $instrumentRepository,
             $genreRepository
         );
+        var_dump($this->work1);
 
         $this->composer1 = $this->work1->getFirstComposer();
         $this->composer2 = $this->work2->getFirstComposer();
