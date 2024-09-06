@@ -53,42 +53,14 @@ class PublishedItemComposerNameTest extends FunctionalTestCase
     protected ?GndPerson $composer2 = null;
 
     /**
-     * @var \Slub\DmNorm\Domain\Model\GndPerson
+     * @var string
      */
-    protected ?GndPerson $composer3 = null;
+    protected string $nameComposer1 = 'J. S. Bach';
 
     /**
      * @var string
      */
-    protected string $nameComposer1 = '';
-
-    /**
-     * @var string
-     */
-    protected string $nameComposer2 = '';
-
-    /**
-     * @var string
-     */
-    protected string $nameComposer3 = '';
-
-    /**
-     * Musik für Orgel; J. S. Bach
-     * @var string
-     */
-    protected string $gndId1 = '300568517';
-
-    /**
-     * Gesänge, op. 43; J. Brahms
-     * @var string
-     */
-    protected string $gndId2 = '107761277X';
-
-    /**
-     * Six trio sonatas; J. S. Bach
-     * @var string
-     */
-    protected string $gndId3 = '300011040';
+    protected string $nameComposer2 = 'J. Brahms';
 
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/dm-norm'
@@ -103,47 +75,15 @@ class PublishedItemComposerNameTest extends FunctionalTestCase
         $this->work2 = new GndWork();
         $this->work3 = new GndWork();
 
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/empty_persons.csv');
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/empty_works.csv');
+        $this->composer1 = new GndPerson();
+        $this->composer2 = new GndPerson();
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
-        $workRepository = GeneralUtility::makeInstance(GndWorkRepository::class, $objectManager);
-        $workRepository->injectPersistenceManager($persistenceManager);
-        $personRepository = GeneralUtility::makeInstance(GndPersonRepository::class, $objectManager);
-        $personRepository->injectPersistenceManager($persistenceManager);
-        $instrumentRepository = GeneralUtility::makeInstance(GndInstrumentRepository::class, $objectManager);
-        $instrumentRepository->injectPersistenceManager($persistenceManager);
-        $genreRepository = GeneralUtility::makeInstance(GndGenreRepository::class, $objectManager);
-        $genreRepository->injectPersistenceManager($persistenceManager);
+        $this->composer1->setName($this->nameComposer1);
+        $this->composer2->setName($this->nameComposer2);
 
-        $this->work1->setGndId($this->gndId1)->pullGndInfo(
-            $workRepository,
-            $personRepository,
-            $instrumentRepository,
-            $genreRepository
-        );
-        $this->work2->setGndId($this->gndId2)->pullGndInfo(
-            $workRepository,
-            $personRepository,
-            $instrumentRepository,
-            $genreRepository
-        );
-        $this->work3->setGndId($this->gndId3)->pullGndInfo(
-            $workRepository,
-            $personRepository,
-            $instrumentRepository,
-            $genreRepository
-        );
-        var_dump($this->work1);
-
-        $this->composer1 = $this->work1->getFirstComposer();
-        $this->composer2 = $this->work2->getFirstComposer();
-        $this->composer3 = $this->work3->getFirstComposer();
-
-        $this->nameComposer1 = $this->composer1->getName();
-        $this->nameComposer2 = $this->composer2->getName();
-        $this->nameComposer3 = $this->composer3->getName();
+        $this->work1->setFirstcomposer($this->composer1);
+        $this->work2->setFirstcomposer($this->composer2);
+        $this->work3->setFirstcomposer($this->composer1);
     }
 
     protected function tearDown(): void
