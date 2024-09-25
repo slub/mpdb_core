@@ -2,7 +2,7 @@ The Music Publisher Database
 ============================
 
 [![TYPO3 11](https://img.shields.io/badge/TYPO3-11-orange.svg)](https://get.typo3.org/version/11)
-[![CC-BY](https://img.shields.io/github/license/dikastes/mpdb_core)](https://github.com/dikastes/mpdb_core/blob/main/LICENSE)
+[![CC-BY](https://img.shields.io/github/license/slub/mpdb_core)](https://github.com/slub/mpdb_core/blob/main/LICENSE)
 
 This is the core module of the music publisher database, which is published under https://musikverlage.slub-dresden.de.
 
