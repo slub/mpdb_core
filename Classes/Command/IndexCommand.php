@@ -862,7 +862,9 @@ class IndexCommand extends Command
             foreach($mmObjects as $object) {
                 $subKey = $object[$subKeyField];
                 $superKey = $object[$superKeyField];
-                $indexedObjects[$superKey][] = isset($subDataObjects[$subKey][0]) ? $subDataObjects[$subKey][0] : null;
+                if (isset($subDataObjects[$subKey][0])) {
+                    $indexedObjects[$superKey][] = $subDataObjects[$subKey][0];
+                }
             }
         } else {
             $subDataObjects = $bufferedObject ?? $this->dataObjects[$config['subObject']];
