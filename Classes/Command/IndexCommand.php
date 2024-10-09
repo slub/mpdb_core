@@ -4,6 +4,7 @@ namespace Slub\MpdbCore\Command;
 
 use Elastic\Elasticsearch\Client;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -793,9 +794,22 @@ class IndexCommand extends Command
             }
 
             $data = $qb->execute()->fetchAll();
+            if ($name == 'person') { 
+                $data = Collection::wrap($data)->
+                    map(function ($person) { return self::removeSortingSymbols($person); });
+            }
 
             $this->dataObjects[$name] = $data;
         }
+    }
+
+    protected static function removeSortingSymbols(array $person): array
+    {
+        $name = Str::of($person['name'])->
+            replace('', '')->
+            replace('', '');
+        $person['name'] = $name;
+        return $person;
     }
 
     /**
