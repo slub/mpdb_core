@@ -155,6 +155,8 @@ class HealthCheckCommand extends Command
         $this->io->section('Removing double works');
         $publishedItems = $this->publishedItemRepository->findAll();
         $this->io->progressStart(count($publishedItems));
+
+        $works = [];
         foreach ($publishedItems as $publishedItem) {
             $this->io->progressAdvance();
             foreach ($publishedItem->getContainedWorks() as $work) {
@@ -172,7 +174,11 @@ class HealthCheckCommand extends Command
             }
             foreach ($publishedItem->getPublishedSubitems() as $publishedSubitem) {
                 foreach ($publishedSubitem->getContainedWorks() as $work) {
-                    if (isset($works[$work->getGndId()]) && $works[$work->getGndId()]->getUid() != $work->getUid()) {
+                    if (
+                        isset($works[$work->getGndId()]) && 
+                        $works[$work->getGndId()]->getUid() != $work->getUid() &&
+                        $work->getGndId() != 'lokal'
+                    ) {
                         $publishedSubitem->removeContainedWork($work);
                         $publishedSubitem->addContainedWork($works[$work->getGndId()]);
                         $this->io->text('detected double ' . $work->getGndId() . ', ' . $work->getFullTitle() . '.');
@@ -258,6 +264,8 @@ class HealthCheckCommand extends Command
     {
         $this->io->section('Removing unused works');
         $publishedItems = $this->publishedItemRepository->findAll();
+
+        // check works linked in published items and subitems
         foreach ($publishedItems as $publishedItem) {
             foreach ($publishedItem->getContainedWorks() as $work) {
                 $works[$work->getUid()] = $work;
@@ -268,6 +276,21 @@ class HealthCheckCommand extends Command
                 }
             }
         }
+
+        // check works linked as super works
+        while (true) {
+            $initialWorkCount = count($works);
+            foreach ($works as $work) {
+                if($work->getSuperWork() != null) {
+                    $works[$work->getSuperWork()->getUid()] = $work->getSuperWork();
+                }
+            }
+            $newWorkCount = count($works);
+            if ($initialWorkCount == $newWorkCount) {
+                break;
+            }
+        }
+
         $worksFromDb = $this->workRepository->findAll();
         $this->io->progressStart(count($works));
         foreach ($worksFromDb as $work) {
