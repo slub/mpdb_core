@@ -1021,7 +1021,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * 
      * @return string $publicComment
      */
-    public function getComment(): string
+    public function getPublicComment(): string
     {
         return $this->publicComment;
     }
@@ -1042,7 +1042,7 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $publicComment
      * @return void
      */
-    public function setComment(string $publicComment): void
+    public function setPublicComment(string $publicComment): void
     {
         $this->publicComment = $publicComment;
     }
