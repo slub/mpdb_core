@@ -26,7 +26,7 @@ CREATE TABLE tx_mpdbcore_domain_model_publishedsubitem (
 	db_identifier int(11) DEFAULT '0' NOT NULL,
 	contained_works int(11) unsigned DEFAULT '0' NOT NULL,
 	publisher_actions int(11) unsigned DEFAULT '0' NOT NULL,
-    mvdb_id varchar(255) DEFAULT '' NOT NULL
+	    mvdb_id varchar(255) DEFAULT '' NOT NULL
 
 );
 
@@ -51,6 +51,7 @@ CREATE TABLE tx_mpdbcore_domain_model_publisheditem (
 	mvdb_id varchar(255) DEFAULT '' NOT NULL,
 	plate_ids varchar(255) DEFAULT '' NOT NULL,
 	comment text,
+	public_comment text,
 	contained_works int(11) unsigned DEFAULT '0' NOT NULL,
 	editors int(11) unsigned DEFAULT '0' NOT NULL,
 	instruments int(11) unsigned DEFAULT '0' NOT NULL,

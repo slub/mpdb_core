@@ -180,6 +180,13 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $comment = '';
 
     /**
+     * publicComment
+     * 
+     * @var string
+     */
+    protected $publicComment = '';
+
+    /**
      * publisher
      * 
      * @var \Slub\MpdbCore\Domain\Model\Publisher
@@ -1010,6 +1017,16 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
+     * Returns the public comment
+     * 
+     * @return string $publicComment
+     */
+    public function getComment(): string
+    {
+        return $this->publicComment;
+    }
+
+    /**
      * Returns the comment
      * 
      * @return string $comment
@@ -1017,6 +1034,17 @@ class PublishedItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getComment(): string
     {
         return $this->comment;
+    }
+
+    /**
+     * Sets the public comment
+     * 
+     * @param string $publicComment
+     * @return void
+     */
+    public function setComment(string $publicComment): void
+    {
+        $this->publicComment = $publicComment;
     }
 
     /**
