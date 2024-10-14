@@ -86,6 +86,7 @@ class IndexCommand extends Command
         [ 'type', '', 'string' ],
         [ 'mvdb_id', '', 'string' ],
         [ 'piano_combination', '', 'string' ],
+        [ 'public_comment', 'comment', 'string' ],
         [ 'final', '', '' ] ];
     protected static $actionData = [
         [ 'quantity', '', 'int' ],

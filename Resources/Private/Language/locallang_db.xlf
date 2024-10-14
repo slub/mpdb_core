@@ -60,6 +60,9 @@
 			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.comment" resname="tx_mpdbcore_domain_model_publisheditem.comment" approved="yes">
 				<source>comment</source>
 			</trans-unit>
+			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.public_comment" resname="tx_mpdbcore_domain_model_publisheditem.public_comment" approved="yes">
+				<source>public comment</source>
+			</trans-unit>
 			<trans-unit id="tx_mpdbcore_domain_model_publisheditem.contained_works" resname="tx_mpdbcore_domain_model_publisheditem.contained_works" approved="yes">
 				<source>contained works</source>
 			</trans-unit>
