@@ -4,6 +4,7 @@ namespace Slub\MpdbCore\Command;
 
 use Elastic\Elasticsearch\Client;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -85,6 +86,7 @@ class IndexCommand extends Command
         [ 'type', '', 'string' ],
         [ 'mvdb_id', '', 'string' ],
         [ 'piano_combination', '', 'string' ],
+        [ 'public_comment', 'comment', 'string' ],
         [ 'final', '', '' ] ];
     protected static $actionData = [
         [ 'quantity', '', 'int' ],
@@ -787,14 +789,28 @@ class IndexCommand extends Command
 
             if ($name == 'published_item') {
                 $qb->where(
-                    $eb->notLike('mvdb_id', $qb->createNamedParameter('AA%'))
+                    $eb->notLike('mvdb_id', $qb->createNamedParameter('AA%')),
+                    $eb->eq('final', 2)
                 );
             }
 
             $data = $qb->execute()->fetchAll();
+            if ($name == 'person') { 
+                $data = Collection::wrap($data)->
+                    map(function ($person) { return self::removeSortingSymbols($person); });
+            }
 
             $this->dataObjects[$name] = $data;
         }
+    }
+
+    protected static function removeSortingSymbols(array $person): array
+    {
+        $name = Str::of($person['name'])->
+            replace('', '')->
+            replace('', '');
+        $person['name'] = $name;
+        return $person;
     }
 
     /**
@@ -861,7 +877,9 @@ class IndexCommand extends Command
             foreach($mmObjects as $object) {
                 $subKey = $object[$subKeyField];
                 $superKey = $object[$superKeyField];
-                $indexedObjects[$superKey][] = isset($subDataObjects[$subKey][0]) ? $subDataObjects[$subKey][0] : null;
+                if (isset($subDataObjects[$subKey][0])) {
+                    $indexedObjects[$superKey][] = $subDataObjects[$subKey][0];
+                }
             }
         } else {
             $subDataObjects = $bufferedObject ?? $this->dataObjects[$config['subObject']];
