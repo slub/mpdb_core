@@ -17,14 +17,14 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'title,type,instrumentation,responsible_person,language,id,comment',
+        'searchFields' => 'title,type,instrumentation,responsible_person,language,id,comment,public_comment',
         'iconfile' => 'EXT:mpdb_core/Resources/Public/Icons/tx_mpdbcore_domain_model_publishermakroitem.gif'
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, type, instrumentation, data_acquisition_certain, related_persons_known, work_examined, data_set_manually_checked, contained_works_identified, responsible_person, date_of_publishing, final, language, id, comment, contained_works, editors, instruments, genre, first_composer, published_subitems, publisher',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, type, instrumentation, data_acquisition_certain, related_persons_known, work_examined, data_set_manually_checked, contained_works_identified, responsible_person, date_of_publishing, final, language, id, comment, public_comment, contained_works, editors, instruments, genre, first_composer, published_subitems, publisher',
     ],
     'types' => [
-        '1' => ['showitem' => 'title, type, instrumentation, data_acquisition_certain, related_persons_known, work_examined, data_set_manually_checked, contained_works_identified, responsible_person, date_of_publishing, final, language, id, comment, contained_works, editors, instruments, genre, first_composer, published_subitems, publisher, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'title, type, instrumentation, data_acquisition_certain, related_persons_known, work_examined, data_set_manually_checked, contained_works_identified, responsible_person, date_of_publishing, final, language, id, comment, public_comment, contained_works, editors, instruments, genre, first_composer, published_subitems, publisher, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -277,6 +277,16 @@ return [
         'comment' => [
             'exclude' => true,
             'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.comment',
+            'config' => [
+                'type' => 'text',
+                'cols' => 40,
+                'rows' => 15,
+                'eval' => 'trim'
+            ]
+        ],
+        'public_comment' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:mpdb_core/Resources/Private/Language/locallang_db.xlf:tx_mpdbcore_domain_model_publisheditem.public_comment',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
