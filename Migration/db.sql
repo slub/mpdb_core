@@ -2,6 +2,8 @@
 -- music publisher database for use with the modularized
 -- mpdb system
 
+USE `typo3`;
+
 DROP TABLE tx_dmnorm_domain_model_gndgenre;
 DROP TABLE tx_dmnorm_domain_model_gndinstrument;
 DROP TABLE tx_dmont_domain_model_genre;
@@ -27,6 +29,19 @@ DROP TABLE tx_dmnorm_gndwork_gndgenre_mm;
 DROP TABLE tx_dmnorm_gndwork_gndinstrument_mm;
 DROP TABLE tx_dmont_work_genre_mm;
 DROP TABLE tx_mpdbcore_domain_model_publisheraction;
+
+UPDATE tx_publisherdb_domain_model_form SET pid = 28;
+UPDATE tx_publisherdb_domain_model_instrument SET pid = 28;
+UPDATE tx_publisherdb_domain_model_mvdbgenre SET pid = 28;
+UPDATE tx_publisherdb_domain_model_mvdbinstrument SET pid = 28;
+UPDATE tx_publisherdb_domain_model_mvdbinstrumentation SET pid = 28;
+UPDATE tx_publisherdb_domain_model_person SET pid = 28;
+UPDATE tx_publisherdb_domain_model_place SET pid = 28;
+UPDATE tx_publisherdb_domain_model_publisher SET pid = 28;
+UPDATE tx_publisherdb_domain_model_publishermakroitem SET pid = 28;
+UPDATE tx_publisherdb_domain_model_publishermikroitem SET pid = 28;
+UPDATE tx_publisherdb_domain_model_publisheraction SET pid = 28;
+UPDATE tx_publisherdb_domain_model_work SET pid = 28;
 
 ALTER TABLE tx_publisherdb_domain_model_form RENAME TO tx_dmnorm_domain_model_gndgenre;
 ALTER TABLE tx_publisherdb_domain_model_instrument RENAME TO tx_dmnorm_domain_model_gndinstrument;
@@ -54,24 +69,12 @@ ALTER TABLE tx_publisherdb_work_form_mm RENAME TO tx_dmnorm_gndwork_gndgenre_mm;
 ALTER TABLE tx_publisherdb_work_instrument_mm RENAME TO tx_dmnorm_gndwork_gndinstrument_mm;
 ALTER TABLE tx_publisherdb_work_mvdbgenre_mm RENAME TO tx_dmont_work_genre_mm;
 
-UPDATE tx_publisherdb_domain_model_form SET pid = 28;
-UPDATE tx_publisherdb_domain_model_instrument SET pid = 28;
-UPDATE tx_publisherdb_domain_model_mvdbgenre SET pid = 28;
-UPDATE tx_publisherdb_domain_model_mvdbinstrument SET pid = 28;
-UPDATE tx_publisherdb_domain_model_mvdbinstrumentation SET pid = 28;
-UPDATE tx_publisherdb_domain_model_person SET pid = 28;
-UPDATE tx_publisherdb_domain_model_place SET pid = 28;
-UPDATE tx_publisherdb_domain_model_publisher SET pid = 28;
-UPDATE tx_publisherdb_domain_model_publishermakroitem SET pid = 28;
-UPDATE tx_publisherdb_domain_model_publishermikroitem SET pid = 28;
-UPDATE tx_publisherdb_domain_model_publisheraction SET pid = 28;
-UPDATE tx_publisherdb_domain_model_work SET pid = 28;
-
-ALTER TABLE tx_mpdbcore_domain_model_publishedsubitem CHANGE `publisher_makro_item` `publisheditem` INT(10) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE tx_dmnorm_domain_model_gndwork CHANGE `genre` `gnd_genres` INT(10) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE tx_mpdbcore_domain_model_publisheditem CHANGE `publisher_mikro_items` `published_subitems` INT(10) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE tx_dmnorm_domain_model_gndgenre CHANGE `super_form` `super_gnd_genre` INT(10) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE tx_mpdbcore_domain_model_publisheraction CHANGE `publishermikroitem` `publishedsubitem` INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE tx_mpdbcore_domain_model_publishedsubitem CHANGE `publisher_makro_item` `publisheditem`  INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE tx_dmnorm_domain_model_gndwork CHANGE `genre` `gnd_genres`  INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE tx_mpdbcore_domain_model_publisheditem CHANGE `publisher_mikro_items` `published_subitems`  INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE tx_dmnorm_domain_model_gndgenre CHANGE `super_form` `super_gnd_genre`  INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE tx_mpdbcore_domain_model_publisheraction CHANGE  `publishermikroitem` `publishedsubitem` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE tx_mpdbcore_domain_model_publisher ADD public SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE tx_mpdbcore_domain_model_publisheditem CHANGE published_subitems publishedsubitems INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE tx_dmnorm_domain_model_gndwork DROP COLUMN medium_of_performance;
 ALTER TABLE tx_dmnorm_domain_model_gndwork CHANGE main_instrumentation medium_of_performance INT(11) UNSIGNED NOT NULL DEFAULT '0';
