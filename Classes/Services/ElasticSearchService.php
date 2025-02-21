@@ -23,6 +23,7 @@ class ElasticSearchService implements SearchServiceInterface
     protected array $params = [];
     protected ?Client $client = null;
     protected string $method = 'search';
+    public array $info = [];
 
     public function setIndex(string $index = ''): SearchServiceInterface
     {
@@ -177,14 +178,14 @@ class ElasticSearchService implements SearchServiceInterface
                 $this->params['body']['query'] = [
                     'bool' => [
                         'must' => [ [
-                            'match_all' => new \stdClass() 
+                            'match_all' => new \stdClass()
                         ] ]
                     ]
                 ];
             } else {
                 $this->params['body']['query'] = [
                     'bool' => [
-                        'must' => [ [ 
+                        'must' => [ [
                             'query_string' => [
                                 'query' => $this->searchTerm
                             ]
